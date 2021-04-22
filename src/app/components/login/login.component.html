@@ -1,0 +1,41 @@
+<body class="renderBg">
+<br><br>
+<header>
+
+  <div id="loginBox" class="container" align="vertical-center" style="max-width: 350px; background: black; opacity: 0.7; border: 2px solid gray; border-radius: 15px;">   
+    <form #loginform="ngForm" (ngSubmit)="loginUser()">
+      <br>
+      <h2 align="center" style="color: white">Log In</h2>
+      <small class="text-danger" align="center">{{message}}</small>
+      <div class="form-group">
+        <label style="color: white" for="userId" >Username</label>
+        <input style="color: white" type="text" class="form-control" placeholder="Enter Username" name="userId" [(ngModel)]="user.userId" required #userId="ngModel"
+        [class.is-invalid]="userId.invalid && userId.touched"
+        >
+        <small class="text-danger" [class.d-none]="userId.valid || userId.untouched">Username is required</small>
+      </div>
+
+
+      <div class="form-group">
+        <label style="color: white" for="pwd">Password</label>
+        <input style="color: white" type="password" class="form-control" placeholder="Enter Password" name="password" [(ngModel)]="user.password" required #password="ngModel"
+        [class.is-invalid]="password.invalid && password.touched"
+        >
+        <small class="text-danger" [class.d-none]="password.valid || password.untouched">Password is required</small>
+      </div>
+
+      <div class="checkbox" style="color: white">
+        <label><input type="checkbox" name="remember"> Remember me</label>
+      </div>
+      <br>
+      <div align="center">
+        <button [disabled]="loginform.form.invalid" type="submit" class="btn btn-primary">Login</button>
+      </div>
+      <br>
+    </form>
+
+  </div>
+</header>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+</body>
+  

@@ -1,0 +1,36 @@
+<div class=" content">
+
+    <div class=" row">
+      <div class=" col-12">
+
+    <br><br>
+
+	<h2>Your History</h2><br>
+    
+
+<p-table [columns]="cols" [value]="products" [style]="{'width':'60%'}"  >
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns" style="text-align: center;" >
+                {{col.header}}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            <td *ngFor="let col of columns" style="text-align: center;" >
+                {{rowData[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<br><br><br><br><br>
+
+<button type="submit" class="btn btn-primary">Delete Saved Stocks</button>
+
+
+<br><br><br><br><br>
+</div>
+</div>
+</div>
