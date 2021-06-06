@@ -20,12 +20,28 @@ import { AuthGuard } from "./auth.guard";
 import {TableModule} from 'primeng/table';
 import { DropdownModule } from "primeng/dropdown";
 import {ChartModule} from 'primeng/chart';
+import { TabViewModule } from 'primeng/tabview';
+import { ButtonModule } from "primeng/button";
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import { DialogModule } from "primeng/dialog";
+import {InputTextModule} from 'primeng/inputtext';
+import { MessagesModule } from 'primeng/messages';
+
+import {CarouselModule} from 'primeng/carousel';
 
 @NgModule({
   imports: [
     TableModule,
     DropdownModule,
     ChartModule,
+    TabViewModule,
+    ButtonModule,
+    ConfirmDialogModule,
+    DialogModule,
+    InputTextModule,
+    MessagesModule,
+    CarouselModule,
+    
 
     BrowserAnimationsModule,
     FormsModule,

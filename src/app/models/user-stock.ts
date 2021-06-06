@@ -1,16 +1,20 @@
+import { StockHistory } from "./stock-history";
+
 export class UserStock {
 
-    stockName : string;
-    stockSymbol : string;
-    openPrice : number;
-	prevClosePrice : number;
-	currClosePrice : number;
-	high : number;
-	low : number;
-	volume : number;
-	marketCap : number;
-	growth : number;
-	returnonEquity : number;
+	stockSymbol : string ;
+	companyName : string ;
+	open : number ;
+	close : number ;
+	high : number ;
+	low : number ;
+	change : number ;
+	peRatio : number ;
+	marketCap : number ;
+	volume : number ;
+	returnOnEquity : number ;
+	history : StockHistory[] ;
+
 
 
     constructor() {  }

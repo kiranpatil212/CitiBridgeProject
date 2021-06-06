@@ -19,9 +19,9 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: "/userhistory",
-    title: "User Profile",
+    title: "User History",
     rtlTitle: "ملف تعريفي للمستخدم",
-    icon: "icon-single-02",
+    icon: "icon-book-bookmark",
     class: ""
   },
   
@@ -29,7 +29,15 @@ export const ROUTES: RouteInfo[] = [
     path: "/recommendations",
     title: "Recommendations",
     rtlTitle: "ملف تعريفي للمستخدم",
-    icon: "icon-single-02",
+    icon: "icon-tap-02",
+    class: ""
+  },
+
+  {
+    path: "/logout",
+    title: "Log Out",
+    rtlTitle: "ملف تعريفي للمستخدم",
+    icon: "icon-button-power",
     class: ""
   },
   

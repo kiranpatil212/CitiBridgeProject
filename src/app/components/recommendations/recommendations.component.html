@@ -1,34 +1,92 @@
+<p-messages [value]="msgs"></p-messages>
+<div class=" content">
 
-	<div class=" content">
+	<div class=" row">
+		<div class=" col-12">
+			<h2>User Recommendations</h2><br>
 
-		<div class=" row">
-		  <div class=" col-12">
-	<br><br>
+			<p-dropdown [options]="sector" [(ngModel)]="selectedSector" placeholder="Select a Sector" optionLabel="nameS"
+			[showClear]="true"></p-dropdown>
 
-	<h2>Get Recommendations</h2><br>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;
 
-	<p-dropdown [options]="sector" [(ngModel)]="selectedSector" placeholder="Select a Sector" optionLabel="nameS"
-	[showClear]="true"></p-dropdown>
+			<p-dropdown [options]="parameter" [(ngModel)]="selectedParameter" placeholder="Parameter" optionLabel="nameP"
+			[showClear]="true"></p-dropdown>
 
-	&nbsp;&nbsp;&nbsp;&nbsp;
-	&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;
 
-	<p-dropdown [options]="choice2" [(ngModel)]="selectedChoice2" placeholder="Long/Short Term" optionLabel="nameC"
-	[showClear]="true"></p-dropdown>
+			<button type="submit" class="btn btn-primary" (click)="getRecommendations()">Get Recommendations</button>
 
-	<br><br><br><br>
+			<br><br><br><br>
 
-	<div class="card">
-		<p-chart type="line" [width]="400" [height]="500" [data]="basicData" [options]="basicOptions"></p-chart>
+			<div class="card" *ngIf="renderData">
+				<p-tabView>
+					<p-tabPanel header="Top Stocks">
+						<div class="row">
+    						<div class="col-sm-4" ></div>
+    						<div class="col-sm-5" ></div>
+    						<div class="col-sm-3" >
+								<button class="btn btn-primary" (click)="showChart=!showChart" >Toggle Table/Chart</button>
+							</div>
+  						</div>
+						<br>
+						<div class="card">
+							<p-table [columns]="cols" [value]="ListOfRecommendationsForUser" *ngIf="showChart">
+								<ng-template pTemplate="header" let-columns>
+									<tr>
+										<th *ngFor="let col of columns" style="text-align: center;" >
+											{{col.header}}
+										</th>
+										<th>Save Stock</th>
+									</tr>
+								</ng-template>
+								<ng-template pTemplate="body" let-rowData let-columns="columns">
+									<tr>
+										<td *ngFor="let col of columns" style="text-align: center;" >
+											{{rowData[col.field]}}
+										</td>
+										<td>
+											<p-button icon="pi pi-plus" (onClick)="getCompanyDetails(rowData)"></p-button>
+											<!-- <p-button icon="pi pi-plus" (onClick)="showPositionDialog()"></p-button> -->
+										</td>
+									</tr>
+								</ng-template>
+							</p-table>
+						</div>
+					</p-tabPanel>
+					<p-tabPanel [disabled]="true" header="Company Overview"> 
+					</p-tabPanel>
+				</p-tabView>
+
+				<div class="card" *ngIf="!showChart">
+					<p-chart type="line" [width]="400" [height]="500" [data]="basicData" [options]="basicOptions"></p-chart>
+				</div>
+				
+			</div>
+
+
+
+			<br><br><br><br><br><br><br>
+
+			<!-- <button *ngIf="renderData" type="submit" class="btn btn-primary" (click)="saveStocks()">Save Stocks</button> -->
+
+			<br><br><br><br><br><br><br>
+		</div>
 	</div>
+</div>
 
+<p-confirmDialog [style]="{width: '30vw'}" key="positionDialog" [position]="position" [baseZIndex]="10000"></p-confirmDialog>
 
-	<br><br><br><br><br><br><br>
+<p-dialog header="Save Stock" [(visible)]="displayPosition" [position]="position" [modal]="true" [style]="{width: '30vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false">
 
-	<button type="submit" class="btn btn-primary">Save Stocks</button>
-
-	<br><br><br><br><br><br><br>
-	</div>
-	</div>
-	</div>
-
+		Enter Volume : 
+		<input type="text" pInputText [(ngModel)]="value1">
+		
+        <ng-template pTemplate="footer">
+			<p-button icon="pi pi-times" (click)="displayPosition=false" label="No"></p-button>
+            <p-button icon="pi pi-check" (click)="confirmSaveStock('right')" label="Yes" class="p-button-text"></p-button>
+        </ng-template>
+</p-dialog>

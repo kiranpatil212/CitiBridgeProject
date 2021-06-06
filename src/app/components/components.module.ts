@@ -11,11 +11,22 @@ import { RecommendationsComponent } from './recommendations/recommendations.comp
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DropdownModule } from "primeng/dropdown";
 import { TableModule } from "primeng/table";
-import {NgForm} from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import {ChartModule} from 'primeng/chart';
+import { TabViewModule } from 'primeng/tabview';
+import { ButtonModule } from "primeng/button";
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import {InputTextModule} from 'primeng/inputtext';
+import { MessagesModule } from 'primeng/messages';
+
+// import {CarouselModule} from 'primeng/carousel';
+  
+
 
 @NgModule({
-  imports: [CommonModule, RouterModule, NgbModule, DropdownModule, TableModule, ChartModule],
+  imports: [CommonModule, RouterModule, NgbModule, DropdownModule, TableModule, ChartModule, TabViewModule, ButtonModule, 
+    FormsModule, ConfirmDialogModule, DialogModule, InputTextModule, MessagesModule],
   declarations: [FooterComponent, NavbarComponent, SidebarComponent, UserHistoryComponent, RecommendationsComponent],
   exports: [FooterComponent, NavbarComponent, SidebarComponent]
 })

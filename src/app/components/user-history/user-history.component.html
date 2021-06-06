@@ -1,36 +1,98 @@
 <div class=" content">
-
+    <h2>Your History</h2><br>
     <div class=" row">
-      <div class=" col-12">
-
-    <br><br>
-
-	<h2>Your History</h2><br>
-    
-
-<p-table [columns]="cols" [value]="products" [style]="{'width':'60%'}"  >
-    <ng-template pTemplate="header" let-columns>
-        <tr>
-            <th *ngFor="let col of columns" style="text-align: center;" >
-                {{col.header}}
-            </th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
-            <td *ngFor="let col of columns" style="text-align: center;" >
-                {{rowData[col.field]}}
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
-
-<br><br><br><br><br>
-
-<button type="submit" class="btn btn-primary">Delete Saved Stocks</button>
+        <div class=" col-lg-6">
 
 
-<br><br><br><br><br>
-</div>
-</div>
+            <p-table [columns]="cols" [value]="ListOfUserHistory" paginator="true" rows="9"
+                [alwaysShowPaginator]="false" [(selection)]="selectedStocks" [rowHover]="true" >
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+
+                        <th *ngFor="let col of columns" style="text-align: center;" pSortableColumn="col">
+                            {{col.header}}<p-sortIcon field="col.field"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+
+                        <!-- <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th> -->
+                        <td>
+                            <p-tableCheckbox [value]="stock"></p-tableCheckbox>
+                        </td>
+
+                        <ng-container *ngFor="let col of columns" style="text-align: center;">
+                            
+                            <td *ngIf="col.field == 'companySymbol'">
+                                <a (click)="getSelectedStockDetails(rowData)">{{rowData[col.field]}}</a>
+                            </td>
+                            <td *ngIf="col.field != 'companySymbol'">
+                                {{rowData[col.field]}}
+                            </td>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+            <br><br><br>
+
+            <button type="submit" class="btn btn-primary">Delete Saved Stocks</button>
+
+            <br><br><br>
+        </div>
+
+        <div class=" col-lg-6">
+
+            <div class=" card card-chart">
+                <div class=" card-header">
+                    <h5 class=" card-category">Over 52 weeks </h5>
+                    <h4 class=" card-title">
+                        <i class=" tim-icons icon-calendar-60 text-info"> </i>Performance Chart of {{selectedStockSymbol}}
+                    </h4>
+                </div>
+                <div class=" card-body" >
+                    <!-- <div class=" chart-area"><canvas id="CountryChart"> </canvas></div> -->
+                    <p-chart type="line"  [data]="basicData" [options]="basicOptions"></p-chart>
+                </div>
+            </div>
+
+            <div class=" card card-chart">
+                <div class=" card-header">
+                    <h5 class=" card-category">Current Statistics</h5>
+                    <h4 class=" card-title">
+                        <i class=" tim-icons icon-notes text-primary"> </i>Meta Data of {{selectedStockSymbol}}
+                    </h4>
+                </div>
+                <div class=" card-body">
+                    <h4 *ngIf="StockSelectedFlag">
+                        <div class=" row">
+                            <div class=" col-sm-6">
+                                <u>Stock</u> : {{selectedStock.stockSymbol}}<br>
+                                <u>Company</u> : {{selectedStock.companyName}}<br>
+                                <u>Open</u> : {{selectedStock.open}}<br>
+                                <u>Close</u> : {{selectedStock.close}}<br>
+                                <u>High</u> : {{selectedStock.high}}<br>
+                            </div>
+
+                            <div class=" col-sm-6">
+                                <u>Low</u> : {{selectedStock.low}}<br>
+                                <u>Volume</u> : {{selectedStock.volume}}<br>
+                                <u>Change</u> : {{selectedStock.change}}<br>
+                                <u>PE Ratio</u> : {{selectedStock.peRatio}}<br>
+                                <u>Market Capital</u> : {{selectedStock.marketCap}}<br>
+                            </div>
+                        </div>
+                    </h4>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 </div>
