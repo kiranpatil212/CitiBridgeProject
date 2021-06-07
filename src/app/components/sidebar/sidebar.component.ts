@@ -50,11 +50,12 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
-
+userName : string;
   constructor() {}
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
+    this.userName = sessionStorage.getItem("loggedInUser");
   }
   isMobileMenu() {
     if (window.innerWidth > 991) {

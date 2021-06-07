@@ -1,16 +1,16 @@
 <div class=" content">
-    <h2>Your History</h2><br>
+    <!-- <h2>Your History</h2><br> -->
     <div class=" row">
         <div class=" col-lg-6">
 
 
-            <p-table [columns]="cols" [value]="ListOfUserHistory" paginator="true" rows="9"
+            <p-table [columns]="cols" [value]="ListOfUserHistory" paginator="true" rows="8"
                 [alwaysShowPaginator]="false" [(selection)]="selectedStocks" [rowHover]="true" >
                 <ng-template pTemplate="header" let-columns>
                     <tr>
-                        <th style="width: 3rem">
+                        <!-- <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th>
+                        </th> -->
 
                         <th *ngFor="let col of columns" style="text-align: center;" pSortableColumn="col">
                             {{col.header}}<p-sortIcon field="col.field"></p-sortIcon>
@@ -23,14 +23,14 @@
                         <!-- <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th> -->
-                        <td>
+                        <!-- <td>
                             <p-tableCheckbox [value]="stock"></p-tableCheckbox>
-                        </td>
+                        </td> -->
 
                         <ng-container *ngFor="let col of columns" style="text-align: center;">
                             
                             <td *ngIf="col.field == 'companySymbol'">
-                                <a (click)="getSelectedStockDetails(rowData)">{{rowData[col.field]}}</a>
+                                <a (click)="getSelectedStockDetails(rowData)" style="color: blue;"><u>{{rowData[col.field]}}</u></a>
                             </td>
                             <td *ngIf="col.field != 'companySymbol'">
                                 {{rowData[col.field]}}
@@ -40,11 +40,11 @@
                 </ng-template>
             </p-table>
 
-            <br><br><br>
+            <!-- <br><br><br> -->
 
-            <button type="submit" class="btn btn-primary">Delete Saved Stocks</button>
+            <!-- <button type="submit" class="btn btn-primary">Delete Saved Stocks</button> -->
 
-            <br><br><br>
+            <!-- <br><br><br> -->
         </div>
 
         <div class=" col-lg-6">

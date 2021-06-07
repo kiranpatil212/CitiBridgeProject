@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
         else{
           this.service.isValidUser = true ;
           console.log(temp.userId);
+          sessionStorage.setItem("loggedInUser", temp.userId);
           console.log("response received");
           this.service.setLoggedIn(true);
 

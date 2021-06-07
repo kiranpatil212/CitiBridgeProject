@@ -19,6 +19,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import {InputTextModule} from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
+import {InputSwitchModule} from 'primeng/inputswitch';
+import {ToastModule} from 'primeng/toast';
 
 // import {CarouselModule} from 'primeng/carousel';
   
@@ -26,7 +28,7 @@ import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
   imports: [CommonModule, RouterModule, NgbModule, DropdownModule, TableModule, ChartModule, TabViewModule, ButtonModule, 
-    FormsModule, ConfirmDialogModule, DialogModule, InputTextModule, MessagesModule],
+    FormsModule, ConfirmDialogModule, DialogModule, InputTextModule, MessagesModule, InputSwitchModule, ToastModule],
   declarations: [FooterComponent, NavbarComponent, SidebarComponent, UserHistoryComponent, RecommendationsComponent],
   exports: [FooterComponent, NavbarComponent, SidebarComponent]
 })

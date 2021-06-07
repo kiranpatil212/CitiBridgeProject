@@ -28,7 +28,7 @@ export class UserHistoryComponent implements OnInit {
 
   ListOfselectedStockHistory: StockHistory[] ;
   ListOfAdjCloseValues: Number[] ;
-  ListOfDates: any ;
+  ListOfDates: string[] ;
 
   basicData: any;
   basicOptions: any;
@@ -77,10 +77,10 @@ export class UserHistoryComponent implements OnInit {
         this.ListOfselectedStockHistory = this.selectedStock.history
         // console.log(this.ListOfselectedStockHistory)
 
-        this.ListOfDates = this.ListOfselectedStockHistory.map(data => data.date)
+        this.ListOfDates = this.ListOfselectedStockHistory.map(data => new Date(data.date).toDateString().split(" ")[1])
         this.ListOfAdjCloseValues = this.ListOfselectedStockHistory.map(data => data.adjClose)
 
-        // console.log(this.ListOfDates)
+        console.log(this.ListOfDates)
         // console.log(this.ListOfAdjCloseValues)
 
         // this.renderSelectedStockTable()

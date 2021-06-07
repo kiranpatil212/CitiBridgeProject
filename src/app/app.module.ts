@@ -28,6 +28,8 @@ import {InputTextModule} from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
 
 import {CarouselModule} from 'primeng/carousel';
+import {InputSwitchModule} from 'primeng/inputswitch';
+import {ToastModule} from 'primeng/toast';
 
 @NgModule({
   imports: [
@@ -41,6 +43,8 @@ import {CarouselModule} from 'primeng/carousel';
     InputTextModule,
     MessagesModule,
     CarouselModule,
+    InputSwitchModule,
+    ToastModule,
     
 
     BrowserAnimationsModule,

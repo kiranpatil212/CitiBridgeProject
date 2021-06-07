@@ -42,7 +42,6 @@ export class RecommendationsComponent implements OnInit {
 
   ListOfRecommendationsForUser: UserStock[];
   ListOfXaxisStockSymbols: String[];
-  // ListOfYaxisLabels: Number[];
 
   ListOfCloseValues: Number[];
   ListOfOpenValues: Number[];
@@ -56,19 +55,14 @@ export class RecommendationsComponent implements OnInit {
   value1: string;
   public Flag: boolean = false;
 
+  selectedStock: any;
 
   basicData: any;
   basicOptions: any;
 
-  // subscription: Subscription;
-  // config: AppConfig;
-  // config: RegistrationService;
-
   products: Product[];
 
   cols: any[];
-
-  // constructor(private messageService: MessageService, private configService: AppConfigService) {}
 
   constructor(private service: RegistrationService, private apiService: ApiService, private confirmationService: ConfirmationService) {
 
@@ -84,7 +78,7 @@ export class RecommendationsComponent implements OnInit {
       { nameS: 'Metal', codeS: 'METAL' },
       { nameS: 'Pharma', codeS: 'PHARMA' },
       { nameS: 'Telecom', codeS: 'TELECOM' }
-      
+
     ];
 
     this.parameter = [
@@ -129,8 +123,9 @@ export class RecommendationsComponent implements OnInit {
 
   }
 
-  showPositionDialog() {
+  showPositionDialog(companyData) {
     this.position = "right";
+    this.selectedStock = companyData;
     this.displayPosition = true;
   }
 
@@ -145,6 +140,7 @@ export class RecommendationsComponent implements OnInit {
       accept: () => {
         this.Flag = true
         console.log(this.Flag)
+        this.getCompanyDetails()
         this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Stock Saved' }];
       },
       reject: () => {
@@ -156,23 +152,22 @@ export class RecommendationsComponent implements OnInit {
     });
   }
 
-  getCompanyDetails(companyData) {
+  getCompanyDetails() {
 
-    this.showPositionDialog()
-    console.log(companyData)
 
-    if (this.Flag == true && this.value1 != null) {
 
-      let companySymbol = companyData.stockSymbol
-      console.log(companySymbol)
-      console.log(this.value1)
+    let companySymbol = this.selectedStock.stockSymbol
+    console.log(this.selectedStock)
+    console.log(this.value1)
 
-      this.apiService.saveStockSelectedByUser(companySymbol, this.value1).subscribe(
+    this.apiService.saveStockSelectedByUser(companySymbol, this.value1)
+      .subscribe(
         data => {
           console.log(data)
+        }, err => {
+          this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Stock not Saved' }];
         }
       )
-    }
   }
 
 
@@ -184,7 +179,7 @@ export class RecommendationsComponent implements OnInit {
     this.apiService.getUserRecommendationsByParamaters(this.selectedSector.codeS, this.selectedParameter.codeP).subscribe(
       (data: UserStock[]) => {
         console.log(data)
-        
+
         this.ListOfRecommendationsForUser = data
         // console.log(this.ListOfRecommendationsForUser)
 
@@ -210,7 +205,6 @@ export class RecommendationsComponent implements OnInit {
             { field: 'low', header: 'Low' },
             { field: 'change', header: 'Change' }
           ];
-          // this.ListOfYaxisLabels = data.map(data => data.change)
         }
 
 
@@ -224,7 +218,6 @@ export class RecommendationsComponent implements OnInit {
             { field: 'low', header: 'Low' },
             { field: 'peRatio', header: 'PE Ratio' }
           ];
-          // this.ListOfYaxisLabels = data.map(data => data.peRatio)
         }
 
 
@@ -238,7 +231,6 @@ export class RecommendationsComponent implements OnInit {
             { field: 'low', header: 'Low' },
             { field: 'marketCap', header: 'Market Capital' }
           ];
-          // this.ListOfYaxisLabels = data.map(data => data.marketCap)
         }
 
         this.renderComparisonChart()
@@ -248,25 +240,9 @@ export class RecommendationsComponent implements OnInit {
 
   renderComparisonChart() {
 
-    // this.canvas = document.getElementById("CountryChart");
-    // this.ctx = this.canvas.getContext("2d");
-    // var gradientStroke = this.ctx.createLinearGradient(0, 230, 0, 50);
-
-    // gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
-    // gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
-    // gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
-
     this.basicData = {
       labels: this.ListOfXaxisStockSymbols,
       datasets: [
-        // {
-        //   type: 'line',
-        //   label: 'Parameter Selected',
-        //   borderColor: '#FFA726',
-        //   borderWidth: 2,
-        //   fill: false,
-        //   data: this.ListOfYaxisLabels
-        // },
         {
           type: 'line',
           label: 'Open',
@@ -304,9 +280,6 @@ export class RecommendationsComponent implements OnInit {
         },
       ]
     }
-
     this.applyDarkTheme()
-
   }
-
 }
