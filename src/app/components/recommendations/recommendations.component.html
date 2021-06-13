@@ -3,7 +3,7 @@
 
 	<div class=" row">
 		<div class=" col-12">
-			<h2>User Recommendations</h2><br>
+			<h2>Stock Recommendations</h2><br>
 
 			<p-dropdown [options]="sector" [(ngModel)]="selectedSector" placeholder="Select a Sector"
 				optionLabel="nameS" [showClear]="true"></p-dropdown>
@@ -17,7 +17,7 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;&nbsp;
 
-			<button type="submit" class="btn btn-primary" (click)="getRecommendations()">Get Recommendations</button>
+			<button type="submit" class="btn btn-success" (click)="getRecommendations()">Get Recommendations</button>
 
 			<br><br><br><br>
 
@@ -27,27 +27,38 @@
 					<div class="col-sm-5"></div>
 					<div class="col-sm-3">
 						<br>
-						<label for="ToggleChart">Toggle Chart</label>
+						<label for="ToggleChart">Toggle Chart.</label>
 						<p-inputSwitch name="ToggleChart" [(ngModel)]="!showChart" (click)="showChart=!showChart">
 						</p-inputSwitch>
 					</div>
 				</div>
 				<br>
 				<div class="card-body">
-					<p-table [columns]="cols" [value]="ListOfRecommendationsForUser" *ngIf="showChart">
+					<p-table [columns]="cols" [value]="ListOfRecommendationsForUser" *ngIf="showChart" >
 						<ng-template pTemplate="header" let-columns>
 							<tr>
-								<th *ngFor="let col of columns" style="text-align: center;">
+								<th *ngFor="let col of columns" style="text-align: center;" >
 									{{col.header}}
 								</th>
-								<th>Save Stock</th>
+								<th >Save Stock</th>
 							</tr>
 						</ng-template>
 						<ng-template pTemplate="body" let-rowData let-columns="columns">
 							<tr>
-								<td *ngFor="let col of columns" style="text-align: center;">
-									{{rowData[col.field]}}
-								</td>
+								<ng-container *ngFor="let col of columns">
+									<td *ngIf="col.field == 'companySymbol'" style="text-align: center;">
+										{{rowData[col.field]}}
+									</td>
+									<td *ngIf="col.field == 'companyName'" style="text-align: center;">
+										{{rowData[col.field]}}
+									</td>
+									<td *ngIf="col.field != 'companySymbol' && col.field != 'companyName'"
+										style="text-align: center;">
+										{{rowData[col.field] | number}}
+									</td>
+									
+								</ng-container>
+
 								<td>
 									<p-button icon="pi pi-plus" (onClick)="showPositionDialog(rowData)">
 									</p-button>
@@ -74,7 +85,7 @@
 	[style]="{width: '30vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
 
 	Enter Volume :
-	<input type="text" pInputText [(ngModel)]="value1">
+	<input type="text" pInputText [(ngModel)]="volume">
 
 	<ng-template pTemplate="footer">
 		<p-button icon="pi pi-times" (click)="displayPosition=false" label="No"></p-button>

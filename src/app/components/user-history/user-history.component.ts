@@ -6,6 +6,7 @@ import { ApiService } from 'src/app/api.service';
 import { UserHistory } from 'src/app/models/user-history';
 import { UserStock } from 'src/app/models/user-stock';
 import { StockHistory } from 'src/app/models/stock-history';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-user-history',
@@ -33,6 +34,8 @@ export class UserHistoryComponent implements OnInit {
   basicData: any;
   basicOptions: any;
 
+  msgs: Message[] = [];
+
   // userHistory: UserHistory[];
 
   constructor(private service: RegistrationService, private apiService: ApiService) { }
@@ -47,6 +50,9 @@ export class UserHistoryComponent implements OnInit {
           this.ListOfUserHistory = data
           console.log(this.ListOfUserHistory)
           this.getSelectedStockDetails(this.ListOfUserHistory[0])
+
+        }, err => {
+          this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting History of Selected Stock, try again' }];
         }
       )
     }
@@ -56,7 +62,7 @@ export class UserHistoryComponent implements OnInit {
       { field: 'companySymbol', header: 'Stock' },
       { field: 'sector', header: 'Sector' },
       { field: 'volume', header: 'Volume' },
-      { field: 'price', header: 'Saved Price' }
+      { field: 'price', header: 'Saved Price (INR)' }
     ];
   }
 
@@ -68,24 +74,20 @@ export class UserHistoryComponent implements OnInit {
 
     this.apiService.getSelectedStockCurrentStatistics(companySymbol).subscribe(
       (data: UserStock) => {
-        // console.log(data)
 
         this.StockSelectedFlag = true
         this.selectedStock = data
         console.log(this.selectedStock)
 
         this.ListOfselectedStockHistory = this.selectedStock.history
-        // console.log(this.ListOfselectedStockHistory)
-
         this.ListOfDates = this.ListOfselectedStockHistory.map(data => new Date(data.date).toDateString().split(" ")[1])
         this.ListOfAdjCloseValues = this.ListOfselectedStockHistory.map(data => data.adjClose)
 
         console.log(this.ListOfDates)
-        // console.log(this.ListOfAdjCloseValues)
-
-        // this.renderSelectedStockTable()
-
-        this.renderComparisonChart()
+        this.renderSelectedStockChart()
+        
+      }, err => {
+        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble fetching current Statistics of Selected Stock, try again' }];
       }
     )
   }
@@ -121,7 +123,7 @@ export class UserHistoryComponent implements OnInit {
 
   }
 
-  renderComparisonChart() {
+  renderSelectedStockChart() {
 
     this.basicData = {
       labels: this.ListOfDates,
@@ -130,7 +132,6 @@ export class UserHistoryComponent implements OnInit {
           type: 'line',
           label: 'AdjClose',
           borderColor: '#42A5F5',
-          // backgroundColor : '#42A5F5',
           borderWidth: 2,
           fill: false,
           data: this.ListOfAdjCloseValues

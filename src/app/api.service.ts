@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { UserHistory } from './models/user-history';
 import { UserStock } from './models/user-stock';
 
@@ -9,39 +10,44 @@ import { UserStock } from './models/user-stock';
 })
 export class ApiService {
 
+  backendUrl = environment.backendUrl;
+  userName: string;
+
   constructor(private http: HttpClient) { }
+
+  ngOnInit() {
+    this.userName = sessionStorage.getItem("loggedInUser");
+  }
 
   getNewsApi(): Observable<any> {
     return this.http.get("https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=fe85013235624481abbe65c9f37baf27")
   }
 
   getSectorWiseComparison(): Observable<any> {
-    return this.http.get("http://localhost:8088/sectorStocks/showSectorWiseChange")
+    return this.http.get(this.backendUrl+"/sectorStocks/showSectorWiseChange")
   }
 
   getUserHistoryByUsername(): Observable<any> {
-    return this.http.get<UserHistory>("http://localhost:8088/userhistory/showStocks/Rhythm")
+    return this.http.get<UserHistory>(this.backendUrl+"/userHistory/showStocks/"+this.userName)
   }
 
   getUserRecommendationsByParamaters(sector: String, parameter: String): Observable<any> {
-    // return this.http.get<UserStock>("http://localhost:8088/sort/showsSortedData?sector=" + sector + "&parameter=" + parameter)
-    // return this.http.get("http://localhost:8088/sort/showsSortedData/Energy/change")
-    return this.http.get<UserStock>("http://localhost:8088/sort/showsSortedData/" + sector + "/" + parameter)
+    return this.http.get<UserStock>(this.backendUrl+"/stockDetails/showRecommendedStocks/" + sector + "/" + parameter)
   }
 
-  saveStockSelectedByUser(companySymbol: String, quantity: String): Observable<any> {
-    return this.http.post("http://localhost:8088/userhistory/saveStocks/Rhythm/" + companySymbol + "/" + quantity, Object)
+  saveStockSelectedByUser( companySymbol: String, quantity: String): Observable<any> {
+    return this.http.post(this.backendUrl+"/userHistory/saveStocks/" + this.userName + "/" + companySymbol + "/" + quantity, Object)
   }
 
   getSelectedStockCurrentStatistics(companySymbol: String): Observable<any> {
-    return this.http.get<UserStock>("http://localhost:8088/sort/showsStockDetails/" + companySymbol)
+    return this.http.get<UserStock>(this.backendUrl+"/stockDetails/showStockDetails/" + companySymbol)
   }
 
   getTopPerformingStockDetails(): Observable<any> {
-    return this.http.get("http://localhost:8088/userhistory/showTopPerformingStock/Rhythm")
+    return this.http.get(this.backendUrl+"/userHistory/showTopPerformingStock/" + this.userName)
   }
 
   deleteStocksFromUserHistory(ids: Number[]): Observable<any> {
-    return this.http.post("http://localhost:8088/userhistory/deleteStocks", ids)
+    return this.http.post(this.backendUrl+"/userHistory/deleteSavedStocksByUserId", ids)
   }
 }

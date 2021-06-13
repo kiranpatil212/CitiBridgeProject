@@ -18,8 +18,8 @@ export class RegistrationService {
   
   constructor( private _http : HttpClient ) { }
 
-  checkLogin(user :User){
-    return this._http.post<string>(this.serviceUrl+ "/login",user)
+  checkLogin(user :User): Observable<any> {
+    return this._http.post(this.serviceUrl+ "/user/login",user)
   }
 
   get isLoggedIn() {

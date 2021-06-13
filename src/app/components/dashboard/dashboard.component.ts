@@ -4,6 +4,7 @@ import { ApiService } from "src/app/api.service";
 import { NewsArticle } from "src/app/models/news-article";
 import { UserStock } from "src/app/models/user-stock";
 import { RegistrationService } from "src/app/registration.service";
+import { Message } from 'primeng/api';
 
 @Component({
   selector: "app-dashboard",
@@ -28,6 +29,7 @@ export class DashboardComponent implements OnInit {
 
   public latestNews: any;
   public newsArticles: NewsArticle[];
+  msgs: Message[] = [];
 
   responsiveOptions;
 
@@ -65,6 +67,8 @@ export class DashboardComponent implements OnInit {
         this.latestNews = data.articles
         console.log(this.latestNews)
         
+      }, err => {
+        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting latest news, try again' }];
       }
     );
 
@@ -78,6 +82,8 @@ export class DashboardComponent implements OnInit {
         // console.log(this.listOfSectors)
         // console.log(this.listOfAvgGrowth)
         this.renderSectorsTable()
+      }, err => {
+        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting Sector Wise Comparison, try again' }];
       }
     );
 
@@ -87,6 +93,8 @@ export class DashboardComponent implements OnInit {
         this.StockFlag = true
         this.topPerformingStock = data
         console.log(this.topPerformingStock)
+      }, err => {
+        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting Top Performing Stock, try again' }];
       }
     );
 

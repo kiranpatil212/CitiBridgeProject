@@ -1,10 +1,11 @@
+<p-messages [value]="msgs"></p-messages>
 <div class=" content">
     <!-- <h2>Your History</h2><br> -->
     <div class=" row">
         <div class=" col-lg-6">
 
 
-            <p-table [columns]="cols" [value]="ListOfUserHistory" paginator="true" rows="8"
+            <p-table [columns]="cols" [value]="ListOfUserHistory" paginator="true" rows="11"
                 [alwaysShowPaginator]="false" [(selection)]="selectedStocks" [rowHover]="true" >
                 <ng-template pTemplate="header" let-columns>
                     <tr>
@@ -12,28 +13,28 @@
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th> -->
 
-                        <th *ngFor="let col of columns" style="text-align: center;" pSortableColumn="col">
-                            {{col.header}}<p-sortIcon field="col.field"></p-sortIcon>
+                        <th *ngFor="let col of columns" style="text-align: center;" [pSortableColumn]="col.field" colspan="col.colspan">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
                         </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData let-columns="columns">
                     <tr>
-
-                        <!-- <th style="width: 3rem">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th> -->
                         <!-- <td>
                             <p-tableCheckbox [value]="stock"></p-tableCheckbox>
                         </td> -->
 
-                        <ng-container *ngFor="let col of columns" style="text-align: center;">
+                        <ng-container *ngFor="let col of columns">
                             
-                            <td *ngIf="col.field == 'companySymbol'">
-                                <a (click)="getSelectedStockDetails(rowData)" style="color: blue;"><u>{{rowData[col.field]}}</u></a>
+                            <td *ngIf="col.field == 'companySymbol'" style="text-align: center;">
+                                <a class="hyperlink" (click)="getSelectedStockDetails(rowData)" style="color: blue;"><u>{{rowData[col.field]}}</u></a>
                             </td>
-                            <td *ngIf="col.field != 'companySymbol'">
+                            <td *ngIf="col.field == 'sector'" style="text-align: center;">
                                 {{rowData[col.field]}}
+                            </td>
+                            <td *ngIf="col.field != 'companySymbol' && col.field != 'sector'" style="text-align: center;">
+                                {{rowData[col.field] | number}}
                             </td>
                         </ng-container>
                     </tr>
@@ -56,38 +57,88 @@
                         <i class=" tim-icons icon-calendar-60 text-info"> </i>Performance Chart of {{selectedStockSymbol}}
                     </h4>
                 </div>
-                <div class=" card-body" >
+                <div class="card-body" >
                     <!-- <div class=" chart-area"><canvas id="CountryChart"> </canvas></div> -->
                     <p-chart type="line"  [data]="basicData" [options]="basicOptions"></p-chart>
                 </div>
             </div>
 
-            <div class=" card card-chart">
-                <div class=" card-header">
-                    <h5 class=" card-category">Current Statistics</h5>
-                    <h4 class=" card-title">
+            <div class="card card-chart">
+                <div class="card-header">
+                    <h5 class="card-category">Current Statistics</h5>
+                    <h4 class="card-title">
                         <i class=" tim-icons icon-notes text-primary"> </i>Meta Data of {{selectedStockSymbol}}
                     </h4>
                 </div>
-                <div class=" card-body">
+                <div class="card-body">
                     <h4 *ngIf="StockSelectedFlag">
-                        <div class=" row">
+
+                        <div class="row">
+                            <div class="col-md-12" style="text-align: center;">
+                              <h2>{{selectedStock.companySymbol}}</h2>
+                              <h3> {{selectedStock.companyName}}</h3>
+                              <h4>Market Capital : {{selectedStock.marketCap | number}} INR</h4><br>
+              
+                              <div class="row">
+                                <div class="col-md-4">
+                                  <h4>Volume : {{selectedStock.volume | number}}</h4>
+                                </div>
+                                <div class="col-md-4">
+                                  <h4>Change : {{selectedStock.change | number}}</h4>
+                                </div>
+                                <div class="col-md-4">
+                                  <h4>PE Ratio : {{selectedStock.peRatio | number}}</h4>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+              
+                          <br>
+              
+                          <div class="row">
+                            <div class="col-md-3" style="text-align: center;">
+                              <h4>
+                                <u>Open</u><br>
+                                {{selectedStock.open | number}}
+                              </h4>
+                            </div>
+                            <div class="col-md-3" style="text-align: center;">
+                              <h4>
+                                <u>Close</u><br>
+                                {{selectedStock.close | number}}
+                              </h4>
+                            </div>
+                            <div class="col-md-3" style="text-align: center;">
+                              <h4>
+                                <u>High</u><br>
+                                {{selectedStock.high | number}}
+                              </h4>
+                            </div>
+                            <div class="col-md-3" style="text-align: center;">
+                              <h4>
+                                <u>Low</u><br>
+                                {{selectedStock.low | number}}
+                              </h4>
+                            </div>
+                          </div>
+
+                        <!-- <div class=" row">
                             <div class=" col-sm-6">
-                                <u>Stock</u> : {{selectedStock.stockSymbol}}<br>
+                                <u>Stock</u> : {{selectedStock.companySymbol}}<br>
                                 <u>Company</u> : {{selectedStock.companyName}}<br>
-                                <u>Open</u> : {{selectedStock.open}}<br>
-                                <u>Close</u> : {{selectedStock.close}}<br>
-                                <u>High</u> : {{selectedStock.high}}<br>
+                                <u>Open</u> : {{selectedStock.open | number}}<br>
+                                <u>Close</u> : {{selectedStock.close | number}}<br>
+                                <u>High</u> : {{selectedStock.high | number}}<br>
                             </div>
 
                             <div class=" col-sm-6">
-                                <u>Low</u> : {{selectedStock.low}}<br>
-                                <u>Volume</u> : {{selectedStock.volume}}<br>
-                                <u>Change</u> : {{selectedStock.change}}<br>
-                                <u>PE Ratio</u> : {{selectedStock.peRatio}}<br>
-                                <u>Market Capital</u> : {{selectedStock.marketCap}}<br>
+                                <u>Low</u> : {{selectedStock.low | number}}<br>
+                                <u>Volume</u> : {{selectedStock.volume | number}}<br>
+                                <u>Change</u> : {{selectedStock.change | number}}<br>
+                                <u>PE Ratio</u> : {{selectedStock.peRatio | number}}<br>
+                                <u>Market Capital</u> : {{selectedStock.marketCap | number}}<br>
                             </div>
-                        </div>
+                        </div> -->
                     </h4>
                 </div>
             </div>

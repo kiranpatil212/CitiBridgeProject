@@ -2,7 +2,7 @@ import { StockHistory } from "./stock-history";
 
 export class UserStock {
 
-	stockSymbol : string ;
+	companySymbol : string ;
 	companyName : string ;
 	open : number ;
 	close : number ;

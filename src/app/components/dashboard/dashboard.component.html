@@ -28,7 +28,7 @@
             [circular]="true" [autoplayInterval]="4000" [responsiveOptions]="responsiveOptions">
             <ng-template let-newsArticle pTemplate="item">
               <a href="{{newsArticle.url}}" style="color: white;"><u>{{newsArticle.title}}</u></a>
-              <img src="{{newsArticle.urlToImage}}" alt="{{newsArticle.urlToImage}}"><br>
+              <img src="{{newsArticle.urlToImage}}" alt="{{newsArticle.urlToImage}}" style="max-height: 300px;"><br>
             </ng-template>
           </p-carousel>
         </div>
@@ -40,29 +40,64 @@
         <div class=" card-header">
           <div class=" row">
             <div class=" col-sm-12 text-left">
-              <h5 class=" card-category">Performance</h5>
+              <h5 class=" card-category">User History Based</h5>
               <h3 class=" card-title">Top Performing Stock</h3>
             </div>
           </div>
         </div>
         <div class=" card-body">
           <h4 *ngIf="StockFlag">
-            <div class=" row">
-              <div class=" col-sm-6">
-                <u>Stock</u> : {{topPerformingStock.stockSymbol}}<br>
-                <u>Company</u> : {{topPerformingStock.companyName}}<br>
-                <u>Open</u> : {{topPerformingStock.open}}<br>
-                <u>Close</u> : {{topPerformingStock.close}}<br>
-                <u>High</u> : {{topPerformingStock.high}}<br>
-              </div>
-              <div class=" col-sm-6">
-                <u>Low</u> : {{topPerformingStock.low}}<br>
-                <u>Volume</u> : {{topPerformingStock.volume}}<br>
-                <u>Change</u> : {{topPerformingStock.change}}<br>
-                <u>PE Ratio</u> : {{topPerformingStock.peRatio}}<br>
-                <u>Market Capital</u> : {{topPerformingStock.marketCap}}<br>
+
+            <div class="row">
+              <div class="col-md-12" style="text-align: center;">
+                <h1 style="color: #1DCEF1;">{{topPerformingStock.companySymbol}}</h1>
+                <h2 style="color: #25D4E6;"> {{topPerformingStock.companyName}}</h2>
+                <h4 style="color: #2DDADB;">Market Capital : {{topPerformingStock.marketCap | number}} INR</h4><br>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <h4 style="color: #35E0D1;">Volume : {{topPerformingStock.volume | number}}</h4>
+                  </div>
+                  <div class="col-md-4">
+                    <h4 style="color: #35E0D1;">Change : {{topPerformingStock.change | number}}</h4>
+                  </div>
+                  <div class="col-md-4">
+                    <h4 style="color: #35E0D1;">PE Ratio : {{topPerformingStock.peRatio | number}}</h4>
+                  </div>
+                </div>
               </div>
             </div>
+
+            <br><br>
+
+            <div class="row">
+              <div class="col-lg-3" style="text-align: center;">
+                <h4 style="color: #3DE6C6;">
+                  <u>Open</u><br>
+                  {{topPerformingStock.open | number}}
+                </h4>
+              </div>
+              <div class="col-lg-3" style="text-align: center;">
+                <h4 style="color: #3DE6C6;">
+                  <u>Close</u><br>
+                  {{topPerformingStock.close | number}}
+                </h4>
+              </div>
+              <div class="col-lg-3" style="text-align: center;">
+                <h4 style="color: #3DE6C6;">
+                  <u>High</u><br>
+                  {{topPerformingStock.high | number}}
+                </h4>
+              </div>
+              <div class="col-lg-3" style="text-align: center;">
+                <h4 style="color: #3DE6C6;">
+                  <u>Low</u><br>
+                  {{topPerformingStock.low | number}}
+                </h4>
+              </div>
+            </div>
+
+
           </h4>
         </div>
       </div>

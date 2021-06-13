@@ -41,7 +41,7 @@ export class RecommendationsComponent implements OnInit {
   showChart = false;
 
   ListOfRecommendationsForUser: UserStock[];
-  ListOfXaxisStockSymbols: String[];
+  ListOfXaxisCompanySymbols: String[];
 
   ListOfCloseValues: Number[];
   ListOfOpenValues: Number[];
@@ -52,7 +52,7 @@ export class RecommendationsComponent implements OnInit {
 
   position: string;
   displayPosition: boolean;
-  value1: string;
+  volume: string;
   public Flag: boolean = false;
 
   selectedStock: any;
@@ -63,6 +63,8 @@ export class RecommendationsComponent implements OnInit {
   products: Product[];
 
   cols: any[];
+  frozenCols: any[];
+
 
   constructor(private service: RegistrationService, private apiService: ApiService, private confirmationService: ConfirmationService) {
 
@@ -85,6 +87,12 @@ export class RecommendationsComponent implements OnInit {
       { nameP: 'Change', codeP: 'CHANGE' },
       { nameP: 'PE Ratio', codeP: 'PERATIO' },
       { nameP: 'Market Capital', codeP: 'MARKET_CAP' }
+    ];
+
+    this.frozenCols = [
+      { field: 'change', header: 'Change' },
+      { field: 'peRatio', header: 'PE Ratio' },
+      { field: 'marketCap', header: 'Market Capital' }
     ];
   }
 
@@ -156,16 +164,15 @@ export class RecommendationsComponent implements OnInit {
 
 
 
-    let companySymbol = this.selectedStock.stockSymbol
+    let companySymbol = this.selectedStock.companySymbol
     console.log(this.selectedStock)
-    console.log(this.value1)
+    console.log(this.volume)
 
-    this.apiService.saveStockSelectedByUser(companySymbol, this.value1)
-      .subscribe(
+    this.apiService.saveStockSelectedByUser(companySymbol, this.volume).subscribe(
         data => {
           console.log(data)
         }, err => {
-          this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Stock not Saved' }];
+          this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server down. Stock could not saved, try again' }];
         }
       )
   }
@@ -179,25 +186,19 @@ export class RecommendationsComponent implements OnInit {
     this.apiService.getUserRecommendationsByParamaters(this.selectedSector.codeS, this.selectedParameter.codeP).subscribe(
       (data: UserStock[]) => {
         console.log(data)
-
         this.ListOfRecommendationsForUser = data
         // console.log(this.ListOfRecommendationsForUser)
 
-        this.ListOfXaxisStockSymbols = data.map(data => data.stockSymbol)
+        this.ListOfXaxisCompanySymbols = data.map(data => data.companySymbol)
         this.ListOfOpenValues = data.map(data => data.open)
         this.ListOfCloseValues = data.map(data => data.close)
         this.ListOfHighValues = data.map(data => data.high)
         this.ListOfLowValues = data.map(data => data.low)
 
-        // console.log(this.ListOfXaxisStockSymbols)
-        // console.log(this.ListOfOpenValues)
-        // console.log(this.ListOfCloseValues)
-        // console.log(this.ListOfHighValues)
-        // console.log(this.ListOfLowValues)
-
         if (this.selectedParameter.codeP == "CHANGE") {
+
           this.cols = [
-            { field: 'stockSymbol', header: 'Stock' },
+            { field: 'companySymbol', header: 'Stock' },
             { field: 'companyName', header: 'Company' },
             { field: 'open', header: 'Open' },
             { field: 'close', header: 'Close' },
@@ -207,10 +208,10 @@ export class RecommendationsComponent implements OnInit {
           ];
         }
 
-
         if (this.selectedParameter.codeP == "PERATIO") {
+          
           this.cols = [
-            { field: 'stockSymbol', header: 'Stock' },
+            { field: 'companySymbol', header: 'Stock' },
             { field: 'companyName', header: 'Company' },
             { field: 'open', header: 'Open' },
             { field: 'close', header: 'Close' },
@@ -220,10 +221,11 @@ export class RecommendationsComponent implements OnInit {
           ];
         }
 
-
         if (this.selectedParameter.codeP == "MARKET_CAP") {
+          
+
           this.cols = [
-            { field: 'stockSymbol', header: 'Stock' },
+            { field: 'companySymbol', header: 'Stock' },
             { field: 'companyName', header: 'Company' },
             { field: 'open', header: 'Open' },
             { field: 'close', header: 'Close' },
@@ -234,6 +236,9 @@ export class RecommendationsComponent implements OnInit {
         }
 
         this.renderComparisonChart()
+        
+      }, err => {
+        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting User recommendations, try again' }];
       }
     )
   }
@@ -241,7 +246,7 @@ export class RecommendationsComponent implements OnInit {
   renderComparisonChart() {
 
     this.basicData = {
-      labels: this.ListOfXaxisStockSymbols,
+      labels: this.ListOfXaxisCompanySymbols,
       datasets: [
         {
           type: 'line',

@@ -9,38 +9,38 @@ declare interface RouteInfo {
 }
 export const ROUTES: RouteInfo[] = [
   {
-    path: "/dashboard",
+    path: "dashboard",
     title: "Dashboard",
     rtlTitle: "لوحة القيادة",
     icon: "icon-chart-pie-36",
     class: ""
   },
-  
+
 
   {
-    path: "/userhistory",
+    path: "userhistory",
     title: "User History",
     rtlTitle: "ملف تعريفي للمستخدم",
     icon: "icon-book-bookmark",
     class: ""
   },
-  
+
   {
-    path: "/recommendations",
-    title: "Recommendations",
+    path: "recommendations",
+    title: "Propositions",
     rtlTitle: "ملف تعريفي للمستخدم",
     icon: "icon-tap-02",
     class: ""
   },
 
   {
-    path: "/logout",
+    path: "logout",
     title: "Log Out",
     rtlTitle: "ملف تعريفي للمستخدم",
     icon: "icon-button-power",
     class: ""
   },
-  
+
 ];
 
 @Component({
@@ -50,8 +50,9 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
-userName : string;
-  constructor() {}
+  userName: string;
+  
+  constructor() { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
