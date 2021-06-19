@@ -1,11 +1,9 @@
 import { Component, NgModule, OnInit } from '@angular/core';
-import { RegistrationService } from 'src/app/registration.service';
-import { Product } from 'src/app/product';
-import { ApiService } from 'src/app/api.service';
 import { UserStock } from 'src/app/models/user-stock';
 import { ConfirmationService } from 'primeng/api';
 import { Message } from 'primeng/api';
 import Chart from 'chart.js';
+import { RecommendationsService } from 'src/app/services/recommendations.service';
 
 
 interface Sector {
@@ -28,9 +26,6 @@ interface Parameter {
 
 export class RecommendationsComponent implements OnInit {
 
-  public canvas: any;
-  public ctx;
-
   sector: Sector[];
   selectedSector: Sector;
 
@@ -40,33 +35,29 @@ export class RecommendationsComponent implements OnInit {
   renderData = false;
   showChart = false;
 
-  ListOfRecommendationsForUser: UserStock[];
-  ListOfXaxisCompanySymbols: String[];
+  listOfRecommendationsForUser: UserStock[];
+  listOfXaxisCompanySymbols: String[];
 
-  ListOfCloseValues: Number[];
-  ListOfOpenValues: Number[];
-  ListOfHighValues: Number[];
-  ListOfLowValues: Number[];
+  listOfCloseValues: Number[];
+  listOfOpenValues: Number[];
+  listOfHighValues: Number[];
+  listOfLowValues: Number[];
 
   msgs: Message[] = [];
 
   position: string;
   displayPosition: boolean;
   volume: string;
-  public Flag: boolean = false;
+  public flag: boolean = false;
 
   selectedStock: any;
 
   basicData: any;
   basicOptions: any;
 
-  products: Product[];
-
   cols: any[];
-  // frozenCols: any[];
 
-
-  constructor(private service: RegistrationService, private apiService: ApiService, private confirmationService: ConfirmationService) {
+  constructor(private recommendationsService: RecommendationsService, private confirmationService: ConfirmationService) {
 
     this.sector = [
       { nameS: 'Automobile', codeS: 'AUTOMOBILE' },
@@ -85,21 +76,13 @@ export class RecommendationsComponent implements OnInit {
 
     this.parameter = [
       { nameP: 'Change', codeP: 'CHANGE' },
-      { nameP: 'PE Ratio', codeP: 'PERATIO' },
+      { nameP: 'PE Ratio', codeP: 'PE_RATIO' },
       { nameP: 'Market Capital', codeP: 'MARKET_CAP' }
     ];
 
-    // this.frozenCols = [
-    //   { field: 'change', header: 'Change' },
-    //   { field: 'peRatio', header: 'PE Ratio' },
-    //   { field: 'marketCap', header: 'Market Capital' }
-    // ];
   }
 
-  ngOnInit() {
-
-    // this.service.getProductsSmall().then(data => this.products = data);
-  }
+  ngOnInit() { }
 
   applyDarkTheme() {
     this.basicOptions = {
@@ -145,27 +128,22 @@ export class RecommendationsComponent implements OnInit {
       header: 'Save Stock Confirmation',
       icon: 'pi pi-info-circle',
       accept: () => {
-        this.Flag = true
-        console.log(this.Flag)
-        this.getCompanyDetails()
+        this.flag = true
+        this.getDetailsOfRecommendedStocks()
         this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Stock Saved' }];
       },
       reject: () => {
-        this.Flag = false
-        console.log(this.Flag)
+        this.flag = false
         this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'Stock not Saved' }];
       },
       key: "positionDialog"
     });
   }
 
-  getCompanyDetails() {
+  getDetailsOfRecommendedStocks() {
 
     let companySymbol = this.selectedStock.companySymbol
-    console.log(this.selectedStock)
-    console.log(this.volume)
-
-    this.apiService.saveStockSelectedByUser(companySymbol, this.volume).subscribe(
+    this.recommendationsService.saveStockSelectedByUser(companySymbol, this.volume).subscribe(
       data => {
         console.log(data)
       }, err => {
@@ -174,78 +152,69 @@ export class RecommendationsComponent implements OnInit {
     )
   }
 
-
   getRecommendations() {
+    this.recommendationsService.getUserRecommendationsByParamaters(this.selectedSector.codeS, this.selectedParameter.codeP).subscribe(
+      (data: UserStock[]) => {
+        this.listOfRecommendationsForUser = data
+        this.listOfXaxisCompanySymbols = data.map(data => data.companySymbol)
+        this.listOfOpenValues = data.map(data => data.open)
+        this.listOfCloseValues = data.map(data => data.close)
+        this.listOfHighValues = data.map(data => data.high)
+        this.listOfLowValues = data.map(data => data.low)
 
-      this.renderData = true
-      this.showChart = true
-      console.log(this.selectedSector.codeS)
-      console.log(this.selectedParameter.codeP)
-      this.apiService.getUserRecommendationsByParamaters(this.selectedSector.codeS, this.selectedParameter.codeP).subscribe(
-        (data: UserStock[]) => {
-          console.log(data)
-          this.ListOfRecommendationsForUser = data
-          // console.log(this.ListOfRecommendationsForUser)
+        if (this.selectedParameter.codeP == "CHANGE") {
 
-          this.ListOfXaxisCompanySymbols = data.map(data => data.companySymbol)
-          this.ListOfOpenValues = data.map(data => data.open)
-          this.ListOfCloseValues = data.map(data => data.close)
-          this.ListOfHighValues = data.map(data => data.high)
-          this.ListOfLowValues = data.map(data => data.low)
-
-          if (this.selectedParameter.codeP == "CHANGE") {
-
-            this.cols = [
-              { field: 'companySymbol', header: 'Stock' },
-              { field: 'companyName', header: 'Company' },
-              { field: 'open', header: 'Open' },
-              { field: 'close', header: 'Close' },
-              { field: 'high', header: 'High' },
-              { field: 'low', header: 'Low' },
-              { field: 'change', header: 'Change' }
-            ];
-          }
-
-          if (this.selectedParameter.codeP == "PERATIO") {
-
-            this.cols = [
-              { field: 'companySymbol', header: 'Stock' },
-              { field: 'companyName', header: 'Company' },
-              { field: 'open', header: 'Open' },
-              { field: 'close', header: 'Close' },
-              { field: 'high', header: 'High' },
-              { field: 'low', header: 'Low' },
-              { field: 'peRatio', header: 'PE Ratio' }
-            ];
-          }
-
-          if (this.selectedParameter.codeP == "MARKET_CAP") {
-
-
-            this.cols = [
-              { field: 'companySymbol', header: 'Stock' },
-              { field: 'companyName', header: 'Company' },
-              { field: 'open', header: 'Open' },
-              { field: 'close', header: 'Close' },
-              { field: 'high', header: 'High' },
-              { field: 'low', header: 'Low' },
-              { field: 'marketCap', header: 'Market Capital' }
-            ];
-          }
-
-          this.renderComparisonChart()
-
-        }, err => {
-          this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting User recommendations, try again' }];
+          this.cols = [
+            { field: 'companySymbol', header: 'Stock' },
+            { field: 'companyName', header: 'Company' },
+            { field: 'open', header: 'Open' },
+            { field: 'close', header: 'Close' },
+            { field: 'high', header: 'High' },
+            { field: 'low', header: 'Low' },
+            { field: 'change', header: 'Change' }
+          ];
         }
-      )
-    
+
+        if (this.selectedParameter.codeP == "PE_RATIO") {
+
+          this.cols = [
+            { field: 'companySymbol', header: 'Stock' },
+            { field: 'companyName', header: 'Company' },
+            { field: 'open', header: 'Open' },
+            { field: 'close', header: 'Close' },
+            { field: 'high', header: 'High' },
+            { field: 'low', header: 'Low' },
+            { field: 'peRatio', header: 'PE Ratio' }
+          ];
+        }
+
+        if (this.selectedParameter.codeP == "MARKET_CAP") {
+
+          this.cols = [
+            { field: 'companySymbol', header: 'Stock' },
+            { field: 'companyName', header: 'Company' },
+            { field: 'open', header: 'Open' },
+            { field: 'close', header: 'Close' },
+            { field: 'high', header: 'High' },
+            { field: 'low', header: 'Low' },
+            { field: 'marketCap', header: 'Market Capital' }
+          ];
+        }
+
+        this.renderComparisonChart()
+        this.renderData = true
+        this.showChart = true
+
+      }, err => {
+        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting User recommendations, try again' }];
+      }
+    )
   }
 
   renderComparisonChart() {
 
     this.basicData = {
-      labels: this.ListOfXaxisCompanySymbols,
+      labels: this.listOfXaxisCompanySymbols,
       datasets: [
         {
           type: 'line',
@@ -253,34 +222,31 @@ export class RecommendationsComponent implements OnInit {
           borderColor: '#FFFF6C',
           borderWidth: 2,
           fill: false,
-          data: this.ListOfOpenValues
+          data: this.listOfOpenValues
         },
         {
           type: 'bar',
           label: 'Close',
-          // backgroundColor: '#7E57C2',
           backgroundColor: '#98FE8D',
           borderWidth: 2,
           fill: false,
-          data: this.ListOfCloseValues
+          data: this.listOfCloseValues
         },
         {
           type: 'bar',
           label: 'High',
-          // backgroundColor: '#66BB6A',
           backgroundColor: '#eb3349',
           borderWidth: 2,
           fill: true,
-          data: this.ListOfHighValues
+          data: this.listOfHighValues
         },
         {
           type: 'bar',
           label: 'Low',
-          // backgroundColor: '#42A5F5',
           backgroundColor: '#9e768f',
           borderWidth: 2,
           fill: true,
-          data: this.ListOfLowValues
+          data: this.listOfLowValues
         },
       ]
     }

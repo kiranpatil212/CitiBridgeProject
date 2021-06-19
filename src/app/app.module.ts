@@ -15,21 +15,20 @@ import { ComponentsModule } from "./components/components.module";
 import { LoginComponent } from "./components/login/login.component";
 import { AuthGuard } from "./auth.guard";
 
-
-import {TableModule} from 'primeng/table';
+import { TableModule } from 'primeng/table';
 import { DropdownModule } from "primeng/dropdown";
-import {ChartModule} from 'primeng/chart';
+import { ChartModule } from 'primeng/chart';
 import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from "primeng/button";
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from "primeng/dialog";
-import {InputTextModule} from 'primeng/inputtext';
+import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
 
-import {CarouselModule} from 'primeng/carousel';
-import {InputSwitchModule} from 'primeng/inputswitch';
-import {ToastModule} from 'primeng/toast';
-import {TooltipModule} from 'primeng/tooltip';
+import { CarouselModule } from 'primeng/carousel';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   imports: [
@@ -47,7 +46,6 @@ import {TooltipModule} from 'primeng/tooltip';
     ToastModule,
     TooltipModule,
     
-
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
@@ -56,11 +54,10 @@ import {TooltipModule} from 'primeng/tooltip';
     RouterModule,
     AppRoutingModule,
     ToastrModule.forRoot()
-],
+  ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    AuthLayoutComponent,
     LoginComponent
   ],
 
@@ -68,4 +65,4 @@ import {TooltipModule} from 'primeng/tooltip';
   bootstrap: [AppComponent]
 })
 
-export class AppModule {}
+export class AppModule { }

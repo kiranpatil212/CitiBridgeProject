@@ -32,8 +32,6 @@ export class AdminLayoutComponent implements OnInit {
     }
   }
   ngOnInit() {
-
-    console.log("in admin");
     this.changeSidebarColor("green")
   }
 }

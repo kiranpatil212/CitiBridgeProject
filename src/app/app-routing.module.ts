@@ -17,13 +17,14 @@ const routes: Routes = [
 
   // { path:'', component:LoginComponent },
 
-  { path:'login', component:LoginComponent },
+  { path: 'login', component: LoginComponent },
 
-  // {
-  //   path: "",
-  //   redirectTo: "dashboard",
-  //   pathMatch: "full"
-  // },
+  {
+    path: "",
+    redirectTo: "login",
+    pathMatch: "full"
+  },
+  
   {
     path: "admin",
     component: AdminLayoutComponent,
@@ -35,12 +36,6 @@ const routes: Routes = [
       }
     ]
   }
-//  {
-//    path: "**",
-//    redirectTo: "dashboard"
-//  }
-
-  
 
 ];
 
@@ -54,4 +49,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

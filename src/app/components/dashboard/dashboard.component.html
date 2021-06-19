@@ -10,7 +10,9 @@
           </h2>
         </div>
         <div class=" card-body">
-          <div class=" chart-area"><canvas id="SectorChart"> </canvas></div>
+          <div class=" chart-area">
+            <canvas id="SectorChart"> </canvas>
+          </div>
         </div>
       </div>
 
@@ -29,7 +31,6 @@
               </h4>
             </div>
           </div>
-          <!-- <h5 class=" card-category">Top Business Headlines</h5> -->
         </div>
         <div class=" card-body">
           <p-carousel [value]="latestNews" styleClass="custom-carousel" [numVisible]="1" [numScroll]="1"
@@ -49,14 +50,16 @@
           <div class=" row">
             <div class=" col-sm-12 text-left">
               <h5 class=" card-category">User History Based</h5>
+
               <h4 class=" card-title">
-                <i class=" tim-icons icon-trophy text-success"> </i> TOP PERFORMING STOCK
+                <i class=" tim-icons icon-trophy text-success" pTooltip="Enter your username" tooltipPosition="left">
+                </i> TOP PERFORMING STOCK
               </h4>
             </div>
           </div>
         </div>
         <div class=" card-body">
-          <h4 *ngIf="StockFlag">
+          <h4 *ngIf="stockFlag">
 
             <div class="row">
               <div class="col-md-12" style="text-align: center;">
@@ -66,13 +69,19 @@
 
                 <div class="row">
                   <div class="col-md-4">
-                    <h4 style="color: #35E0D1;">Volume : {{topPerformingStock.volume | number}}</h4>
+                    <h4 style="color: #35E0D1;"><u>Volume</u><br>
+                      {{topPerformingStock.volume | number}}
+                    </h4>
                   </div>
                   <div class="col-md-4">
-                    <h4 style="color: #35E0D1;">Change : {{topPerformingStock.change | number}}</h4>
+                    <h4 style="color: #35E0D1;"><u>Change %</u><br>
+                      {{topPerformingStock.change | number}}
+                    </h4>
                   </div>
                   <div class="col-md-4">
-                    <h4 style="color: #35E0D1;">PE Ratio : {{topPerformingStock.peRatio | number}}</h4>
+                    <h4 style="color: #35E0D1;"><u>PE Ratio</u><br>
+                      {{topPerformingStock.peRatio | number}}
+                    </h4>
                   </div>
                 </div>
               </div>
@@ -80,29 +89,29 @@
 
             <br><br>
 
-            <div class="row">
-              <div class="col-lg-3" style="text-align: center;">
+            <div class="row" style="text-align: center;">
+              <div class="col-lg-3">
                 <h4 style="color: #3DE6C6;">
                   <u>Open</u><br>
-                  {{topPerformingStock.open | number}}
+                  {{topPerformingStock.open | number}} INR
                 </h4>
               </div>
-              <div class="col-lg-3" style="text-align: center;">
+              <div class="col-lg-3">
                 <h4 style="color: #3DE6C6;">
                   <u>Close</u><br>
-                  {{topPerformingStock.close | number}}
+                  {{topPerformingStock.close | number}} INR
                 </h4>
               </div>
-              <div class="col-lg-3" style="text-align: center;">
+              <div class="col-lg-3">
                 <h4 style="color: #3DE6C6;">
                   <u>High</u><br>
-                  {{topPerformingStock.high | number}}
+                  {{topPerformingStock.high | number}} INR
                 </h4>
               </div>
-              <div class="col-lg-3" style="text-align: center;">
+              <div class="col-lg-3">
                 <h4 style="color: #3DE6C6;">
                   <u>Low</u><br>
-                  {{topPerformingStock.low | number}}
+                  {{topPerformingStock.low | number}} INR
                 </h4>
               </div>
             </div>

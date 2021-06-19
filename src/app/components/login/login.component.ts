@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
-import { RegistrationService } from 'src/app/registration.service';
-
-
+import { LoginService } from 'src/app/services/login.service';
 
 
 @Component({
@@ -14,10 +12,9 @@ import { RegistrationService } from 'src/app/registration.service';
 })
 export class LoginComponent implements OnInit {
   user = new User;
-  
-  message='';
+  message = '';
 
-  constructor(private service : RegistrationService, private router : Router) { }
+  constructor(private service : LoginService, private router : Router) { }
 
   ngOnInit(): void {
   }
@@ -27,34 +24,22 @@ export class LoginComponent implements OnInit {
     
     this.service.checkLogin(temp).subscribe(
       (data) => {
-      console.log(data)
-        // this._service.isValidUser = result;
+       
         if(!data )
         {
-          console.log(data)
           this.service.isValidUser = false;
-          console.log(temp.userId);
-          console.log("exception occurred")
-
           this.message="Bad credentials. Please enter valid Username and Password.";
           this.service.setLoggedIn(false)
         }
         else{
-          console.log(data)
           this.service.isValidUser = true ;
-          console.log(temp.userId);
           sessionStorage.setItem("loggedInUser", temp.userId);
-          console.log("response received");
           this.service.setLoggedIn(true);
-
           sessionStorage.setItem("isLoggedIn","true");
           this.router.navigateByUrl("/admin/dashboard");
-         
         }
       },
       err => {
-       
-        console.log("exception occurred")
         this.message="Unable to fetch data, Server is down.";
       }
     );

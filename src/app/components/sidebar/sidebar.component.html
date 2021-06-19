@@ -1,19 +1,16 @@
 <div class="logo">
- 
-  <a  class="simple-text logo-normal" style="text-align: center; font-weight: 700; font-size: 3vh; color: darkslateblue;">
+  <a class="simple-text logo-normal"
+    style="text-align: center; font-weight: 700; font-size: 3vh; color: darkslateblue;">
     Welcome, {{userName}}
   </a>
 </div>
 <div class="sidebar-wrapper">
   <ul class="nav">
-    <li
-      routerLinkActive="active"
-      *ngFor="let menuItem of menuItems"
-      class="{{ menuItem.class }} nav-item"
-    >
+    <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{ menuItem.class }} nav-item">
       <a [routerLink]="[menuItem.path]">
         <i class="tim-icons  {{ menuItem.icon }}" style="color: darkslateblue;"></i>
-        <p style="font-weight: bolder; font-size: large; word-wrap: break-word; color: darkslateblue;">{{ menuItem.title }}</p>
+        <p style="font-weight: bolder; font-size: large; word-wrap: break-word; color: darkslateblue;">{{ menuItem.title
+          }}</p>
       </a>
     </li>
   </ul>
