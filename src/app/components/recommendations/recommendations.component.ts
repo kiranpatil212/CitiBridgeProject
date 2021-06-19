@@ -63,7 +63,7 @@ export class RecommendationsComponent implements OnInit {
   products: Product[];
 
   cols: any[];
-  frozenCols: any[];
+  // frozenCols: any[];
 
 
   constructor(private service: RegistrationService, private apiService: ApiService, private confirmationService: ConfirmationService) {
@@ -89,17 +89,16 @@ export class RecommendationsComponent implements OnInit {
       { nameP: 'Market Capital', codeP: 'MARKET_CAP' }
     ];
 
-    this.frozenCols = [
-      { field: 'change', header: 'Change' },
-      { field: 'peRatio', header: 'PE Ratio' },
-      { field: 'marketCap', header: 'Market Capital' }
-    ];
+    // this.frozenCols = [
+    //   { field: 'change', header: 'Change' },
+    //   { field: 'peRatio', header: 'PE Ratio' },
+    //   { field: 'marketCap', header: 'Market Capital' }
+    // ];
   }
 
   ngOnInit() {
 
     // this.service.getProductsSmall().then(data => this.products = data);
-
   }
 
   applyDarkTheme() {
@@ -162,85 +161,85 @@ export class RecommendationsComponent implements OnInit {
 
   getCompanyDetails() {
 
-
-
     let companySymbol = this.selectedStock.companySymbol
     console.log(this.selectedStock)
     console.log(this.volume)
 
     this.apiService.saveStockSelectedByUser(companySymbol, this.volume).subscribe(
-        data => {
-          console.log(data)
-        }, err => {
-          this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server down. Stock could not saved, try again' }];
-        }
-      )
+      data => {
+        console.log(data)
+      }, err => {
+        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server down. Stock could not saved, try again' }];
+      }
+    )
   }
 
 
   getRecommendations() {
-    this.renderData = true
-    this.showChart = true
-    console.log(this.selectedSector.codeS)
-    console.log(this.selectedParameter.codeP)
-    this.apiService.getUserRecommendationsByParamaters(this.selectedSector.codeS, this.selectedParameter.codeP).subscribe(
-      (data: UserStock[]) => {
-        console.log(data)
-        this.ListOfRecommendationsForUser = data
-        // console.log(this.ListOfRecommendationsForUser)
 
-        this.ListOfXaxisCompanySymbols = data.map(data => data.companySymbol)
-        this.ListOfOpenValues = data.map(data => data.open)
-        this.ListOfCloseValues = data.map(data => data.close)
-        this.ListOfHighValues = data.map(data => data.high)
-        this.ListOfLowValues = data.map(data => data.low)
+      this.renderData = true
+      this.showChart = true
+      console.log(this.selectedSector.codeS)
+      console.log(this.selectedParameter.codeP)
+      this.apiService.getUserRecommendationsByParamaters(this.selectedSector.codeS, this.selectedParameter.codeP).subscribe(
+        (data: UserStock[]) => {
+          console.log(data)
+          this.ListOfRecommendationsForUser = data
+          // console.log(this.ListOfRecommendationsForUser)
 
-        if (this.selectedParameter.codeP == "CHANGE") {
+          this.ListOfXaxisCompanySymbols = data.map(data => data.companySymbol)
+          this.ListOfOpenValues = data.map(data => data.open)
+          this.ListOfCloseValues = data.map(data => data.close)
+          this.ListOfHighValues = data.map(data => data.high)
+          this.ListOfLowValues = data.map(data => data.low)
 
-          this.cols = [
-            { field: 'companySymbol', header: 'Stock' },
-            { field: 'companyName', header: 'Company' },
-            { field: 'open', header: 'Open' },
-            { field: 'close', header: 'Close' },
-            { field: 'high', header: 'High' },
-            { field: 'low', header: 'Low' },
-            { field: 'change', header: 'Change' }
-          ];
+          if (this.selectedParameter.codeP == "CHANGE") {
+
+            this.cols = [
+              { field: 'companySymbol', header: 'Stock' },
+              { field: 'companyName', header: 'Company' },
+              { field: 'open', header: 'Open' },
+              { field: 'close', header: 'Close' },
+              { field: 'high', header: 'High' },
+              { field: 'low', header: 'Low' },
+              { field: 'change', header: 'Change' }
+            ];
+          }
+
+          if (this.selectedParameter.codeP == "PERATIO") {
+
+            this.cols = [
+              { field: 'companySymbol', header: 'Stock' },
+              { field: 'companyName', header: 'Company' },
+              { field: 'open', header: 'Open' },
+              { field: 'close', header: 'Close' },
+              { field: 'high', header: 'High' },
+              { field: 'low', header: 'Low' },
+              { field: 'peRatio', header: 'PE Ratio' }
+            ];
+          }
+
+          if (this.selectedParameter.codeP == "MARKET_CAP") {
+
+
+            this.cols = [
+              { field: 'companySymbol', header: 'Stock' },
+              { field: 'companyName', header: 'Company' },
+              { field: 'open', header: 'Open' },
+              { field: 'close', header: 'Close' },
+              { field: 'high', header: 'High' },
+              { field: 'low', header: 'Low' },
+              { field: 'marketCap', header: 'Market Capital' }
+            ];
+          }
+
+          this.renderComparisonChart()
+
+        }, err => {
+          this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting User recommendations, try again' }];
         }
-
-        if (this.selectedParameter.codeP == "PERATIO") {
-          
-          this.cols = [
-            { field: 'companySymbol', header: 'Stock' },
-            { field: 'companyName', header: 'Company' },
-            { field: 'open', header: 'Open' },
-            { field: 'close', header: 'Close' },
-            { field: 'high', header: 'High' },
-            { field: 'low', header: 'Low' },
-            { field: 'peRatio', header: 'PE Ratio' }
-          ];
-        }
-
-        if (this.selectedParameter.codeP == "MARKET_CAP") {
-          
-
-          this.cols = [
-            { field: 'companySymbol', header: 'Stock' },
-            { field: 'companyName', header: 'Company' },
-            { field: 'open', header: 'Open' },
-            { field: 'close', header: 'Close' },
-            { field: 'high', header: 'High' },
-            { field: 'low', header: 'Low' },
-            { field: 'marketCap', header: 'Market Capital' }
-          ];
-        }
-
-        this.renderComparisonChart()
-        
-      }, err => {
-        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting User recommendations, try again' }];
-      }
-    )
+      )
+    
   }
 
   renderComparisonChart() {

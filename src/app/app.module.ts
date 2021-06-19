@@ -7,7 +7,6 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from "./app.component";
 import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
-import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
@@ -30,6 +29,7 @@ import { MessagesModule } from 'primeng/messages';
 import {CarouselModule} from 'primeng/carousel';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {ToastModule} from 'primeng/toast';
+import {TooltipModule} from 'primeng/tooltip';
 
 @NgModule({
   imports: [
@@ -45,6 +45,7 @@ import {ToastModule} from 'primeng/toast';
     CarouselModule,
     InputSwitchModule,
     ToastModule,
+    TooltipModule,
     
 
     BrowserAnimationsModule,

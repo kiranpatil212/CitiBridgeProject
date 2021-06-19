@@ -1,6 +1,6 @@
 <div class="logo">
  
-  <a  class="simple-text logo-normal" style="text-align: center; font-weight: bolder; font-size: large;">
+  <a  class="simple-text logo-normal" style="text-align: center; font-weight: 700; font-size: 3vh; color: darkslateblue;">
     Welcome, {{userName}}
   </a>
 </div>
@@ -12,8 +12,8 @@
       class="{{ menuItem.class }} nav-item"
     >
       <a [routerLink]="[menuItem.path]">
-        <i class="tim-icons  {{ menuItem.icon }}"></i>
-        <p style="font-weight: bolder; font-size: medium; word-wrap: break-word;">{{ menuItem.title }}</p>
+        <i class="tim-icons  {{ menuItem.icon }}" style="color: darkslateblue;"></i>
+        <p style="font-weight: bolder; font-size: large; word-wrap: break-word; color: darkslateblue;">{{ menuItem.title }}</p>
       </a>
     </li>
   </ul>

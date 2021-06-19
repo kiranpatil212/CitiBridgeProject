@@ -17,6 +17,7 @@ export class ApiService {
 
   ngOnInit() {
     this.userName = sessionStorage.getItem("loggedInUser");
+    console.log(this.userName)
   }
 
   getNewsApi(): Observable<any> {
@@ -28,7 +29,7 @@ export class ApiService {
   }
 
   getUserHistoryByUsername(): Observable<any> {
-    return this.http.get<UserHistory>(this.backendUrl+"/userHistory/showStocks/"+this.userName)
+    return this.http.get<UserHistory>(this.backendUrl+"/userHistory/showStocks/" + sessionStorage.getItem("loggedInUser"))
   }
 
   getUserRecommendationsByParamaters(sector: String, parameter: String): Observable<any> {
@@ -36,7 +37,7 @@ export class ApiService {
   }
 
   saveStockSelectedByUser( companySymbol: String, quantity: String): Observable<any> {
-    return this.http.post(this.backendUrl+"/userHistory/saveStocks/" + this.userName + "/" + companySymbol + "/" + quantity, Object)
+    return this.http.post(this.backendUrl+"/userHistory/saveStocks/" + sessionStorage.getItem("loggedInUser") + "/" + companySymbol + "/" + quantity, Object)
   }
 
   getSelectedStockCurrentStatistics(companySymbol: String): Observable<any> {
@@ -44,7 +45,7 @@ export class ApiService {
   }
 
   getTopPerformingStockDetails(): Observable<any> {
-    return this.http.get(this.backendUrl+"/userHistory/showTopPerformingStock/" + this.userName)
+    return this.http.get(this.backendUrl+"/userHistory/showTopPerformingStock/" + sessionStorage.getItem("loggedInUser"))
   }
 
   deleteStocksFromUserHistory(ids: Number[]): Observable<any> {

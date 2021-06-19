@@ -4,9 +4,9 @@
     <div class=" col-lg-12">
       <div class=" card card-chart">
         <div class=" card-header">
-          <h4 class=" card-category">Sector Wise Comparison</h4>
+          <h4 class=" card-category">All Sectors</h4>
           <h2 class=" card-title">
-            <i class=" tim-icons icon-chart-bar-32 text-info"> </i> All Sectors
+            <i class=" tim-icons icon-chart-bar-32 text-info"> </i> SECTOR WISE COMPARISON
           </h2>
         </div>
         <div class=" card-body">
@@ -21,14 +21,22 @@
     <div class=" col-lg-6">
       <div class=" card card-chart">
         <div class=" card-header">
-          <h5 class=" card-category">Top Business Headlines</h5>
+          <div class=" row">
+            <div class=" col-sm-12 text-left">
+              <h5 class=" card-category">Current News</h5>
+              <h4 class=" card-title">
+                <i class=" tim-icons icon-bulb-63 text-success"> </i> TOP BUSINESS HEADLINES
+              </h4>
+            </div>
+          </div>
+          <!-- <h5 class=" card-category">Top Business Headlines</h5> -->
         </div>
         <div class=" card-body">
           <p-carousel [value]="latestNews" styleClass="custom-carousel" [numVisible]="1" [numScroll]="1"
             [circular]="true" [autoplayInterval]="4000" [responsiveOptions]="responsiveOptions">
             <ng-template let-newsArticle pTemplate="item">
-              <a href="{{newsArticle.url}}" style="color: white;"><u>{{newsArticle.title}}</u></a>
               <img src="{{newsArticle.urlToImage}}" alt="{{newsArticle.urlToImage}}" style="max-height: 300px;"><br>
+              <a href="{{newsArticle.url}}" style="color: white;"><u>{{newsArticle.title}}</u></a>
             </ng-template>
           </p-carousel>
         </div>
@@ -41,7 +49,9 @@
           <div class=" row">
             <div class=" col-sm-12 text-left">
               <h5 class=" card-category">User History Based</h5>
-              <h3 class=" card-title">Top Performing Stock</h3>
+              <h4 class=" card-title">
+                <i class=" tim-icons icon-trophy text-success"> </i> TOP PERFORMING STOCK
+              </h4>
             </div>
           </div>
         </div>
