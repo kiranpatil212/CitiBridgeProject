@@ -164,7 +164,7 @@ export class RecommendationsComponent implements OnInit {
 
     this.userHistoryService.saveStockSelectedByUser(stockToSave).subscribe(
       data => {
-        console.log(data)
+       this.msgs = [{ severity: 'success', summary: 'SuccessFul', detail: 'Stock saved successfully' }];
       }, err => {
         this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server down. Stock could not saved, try again' }];
       }
