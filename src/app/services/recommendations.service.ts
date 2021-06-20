@@ -18,7 +18,5 @@ export class RecommendationsService {
     return this.http.get<UserStock>(this.backendUrl + "/stockDetails/showRecommendedStocks/" + sector + "/" + parameter)
   }
 
-  saveStockSelectedByUser(companySymbol: String, quantity: String): Observable<any> {
-    return this.http.post(this.backendUrl + "/userHistory/saveStocks/" + sessionStorage.getItem("loggedInUser") + "/" + companySymbol + "/" + quantity, Object)
-  }
+ 
 }
