@@ -63,6 +63,11 @@
 								</td>
 							</tr>
 						</ng-template>
+						<ng-template pTemplate="emptymessage">
+							<tr>
+								<td colspan="columns.length">No Recommendations found</td>
+							</tr>
+						</ng-template>
 					</p-table>
 				</div>
 				<div class="card-body" *ngIf="!showChart">

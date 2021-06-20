@@ -4,6 +4,8 @@ import { ConfirmationService } from 'primeng/api';
 import { Message } from 'primeng/api';
 import Chart from 'chart.js';
 import { RecommendationsService } from 'src/app/services/recommendations.service';
+import { UserHistoryService } from 'src/app/services/user-history.service';
+import { UserHistory } from 'src/app/models/user-history';
 
 
 interface Sector {
@@ -50,14 +52,16 @@ export class RecommendationsComponent implements OnInit {
   volume: string;
   public flag: boolean = false;
 
-  selectedStock: any;
+  selectedStock: UserStock;
 
   basicData: any;
   basicOptions: any;
 
   cols: any[];
 
-  constructor(private recommendationsService: RecommendationsService, private confirmationService: ConfirmationService) {
+  constructor(private recommendationsService: RecommendationsService, 
+    private confirmationService: ConfirmationService,
+    private userHistoryService: UserHistoryService) {
 
     this.sector = [
       { nameS: 'Automobile', codeS: 'AUTOMOBILE' },
@@ -79,6 +83,14 @@ export class RecommendationsComponent implements OnInit {
       { nameP: 'PE Ratio', codeP: 'PE_RATIO' },
       { nameP: 'Market Capital', codeP: 'MARKET_CAP' }
     ];
+
+    this.cols = [
+      { field: 'companySymbol', header: 'Stock' },
+      { field: 'companyName', header: 'Company' },
+      { field: 'open', header: 'Open' },
+      { field: 'close', header: 'Close' },
+      { field: 'high', header: 'High' },
+      { field: 'low', header: 'Low' }];
 
   }
 
@@ -129,7 +141,7 @@ export class RecommendationsComponent implements OnInit {
       icon: 'pi pi-info-circle',
       accept: () => {
         this.flag = true
-        this.getDetailsOfRecommendedStocks()
+        this.saveStockSelectedByUser()
         this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Stock Saved' }];
       },
       reject: () => {
@@ -140,12 +152,19 @@ export class RecommendationsComponent implements OnInit {
     });
   }
 
-  getDetailsOfRecommendedStocks() {
+  saveStockSelectedByUser() {
 
-    let companySymbol = this.selectedStock.companySymbol
-    this.recommendationsService.saveStockSelectedByUser(companySymbol, this.volume).subscribe(
+    let stockToSave : UserHistory = new UserHistory();
+    stockToSave.companySymbol = this.selectedStock.companySymbol;
+    stockToSave.userId = sessionStorage.getItem("loggedInUser");
+    stockToSave.sector = this.selectedSector.codeS;
+    stockToSave.volume = Number(this.volume);
+    stockToSave.price = this.selectedStock.close;
+
+
+    this.userHistoryService.saveStockSelectedByUser(stockToSave).subscribe(
       data => {
-        console.log(data)
+       this.msgs = [{ severity: 'success', summary: 'SuccessFul', detail: 'Stock saved successfully' }];
       }, err => {
         this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server down. Stock could not saved, try again' }];
       }
@@ -164,41 +183,18 @@ export class RecommendationsComponent implements OnInit {
 
         if (this.selectedParameter.codeP == "CHANGE") {
 
-          this.cols = [
-            { field: 'companySymbol', header: 'Stock' },
-            { field: 'companyName', header: 'Company' },
-            { field: 'open', header: 'Open' },
-            { field: 'close', header: 'Close' },
-            { field: 'high', header: 'High' },
-            { field: 'low', header: 'Low' },
-            { field: 'change', header: 'Change' }
-          ];
+          this.cols.push({ field: 'change', header: 'Change' });
         }
 
         if (this.selectedParameter.codeP == "PE_RATIO") {
 
-          this.cols = [
-            { field: 'companySymbol', header: 'Stock' },
-            { field: 'companyName', header: 'Company' },
-            { field: 'open', header: 'Open' },
-            { field: 'close', header: 'Close' },
-            { field: 'high', header: 'High' },
-            { field: 'low', header: 'Low' },
-            { field: 'peRatio', header: 'PE Ratio' }
-          ];
+          this.cols.push({ field: 'peRatio', header: 'PE Ratio' });
+          
         }
 
         if (this.selectedParameter.codeP == "MARKET_CAP") {
 
-          this.cols = [
-            { field: 'companySymbol', header: 'Stock' },
-            { field: 'companyName', header: 'Company' },
-            { field: 'open', header: 'Open' },
-            { field: 'close', header: 'Close' },
-            { field: 'high', header: 'High' },
-            { field: 'low', header: 'Low' },
-            { field: 'marketCap', header: 'Market Capital' }
-          ];
+          this.cols.push({ field: 'marketCap', header: 'Market Capital' });
         }
 
         this.renderComparisonChart()
