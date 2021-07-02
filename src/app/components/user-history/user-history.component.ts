@@ -27,27 +27,30 @@ export class UserHistoryComponent implements OnInit {
   listOfAdjCloseValues: Number[];
   listOfDates: string[];
 
-  basicData: any;
-  basicOptions: any;
+  chartData: any;
+  chartConfigOptions: any;
 
   msgs: Message[] = [];
 
-  constructor( private userHistoryService: UserHistoryService) { }
+  constructor(private userHistoryService: UserHistoryService) { }
 
   ngOnInit() {
 
     if (this.stockSelectedFlag == false) {
       this.userHistoryService.getUserHistoryByUsername().subscribe(
         (data: UserHistory[]) => {
-          this.listOfUserHistory = data
-          this.getSelectedStockDetails(this.listOfUserHistory[0])
-
+          if (data != null && data.length > 0) {
+            this.listOfUserHistory = data
+            this.getSelectedStockDetails(this.listOfUserHistory[0])
+          }
+          else {
+            this.msgs = [{ severity: 'error', summary: 'ServerError', detail: 'Trouble getting History of Selected Stock, try again' }];
+          }
         }, err => {
-          this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting History of Selected Stock, try again' }];
+          this.msgs = [{ severity: 'error', summary: 'NetworkError', detail: 'Server down. Trouble getting History of Selected Stock, try again' }];
         }
       )
     }
-
 
     this.cols = [
       { field: 'companySymbol', header: 'Stock' },
@@ -63,22 +66,25 @@ export class UserHistoryComponent implements OnInit {
 
     this.userHistoryService.getCurrentStatisticsOfSelectedStock(companySymbol).subscribe(
       (data: UserStock) => {
-
-        this.stockSelectedFlag = true
-        this.selectedStock = data
-        this.listOfselectedStockHistory = this.selectedStock.history
-        this.listOfDates = this.listOfselectedStockHistory.map(data => new Date(data.date).toDateString().split(" ")[1])
-        this.listOfAdjCloseValues = this.listOfselectedStockHistory.map(data => data.adjClose)
-        this.renderSelectedStockChart()
-
+        if (data != null) {
+          this.selectedStock = data
+          this.listOfselectedStockHistory = this.selectedStock.history
+          this.listOfDates = this.listOfselectedStockHistory.map(data => new Date(data.date).toDateString().split(" ")[1])
+          this.listOfAdjCloseValues = this.listOfselectedStockHistory.map(data => data.adjClose)
+          this.renderSelectedStockChart()
+          this.stockSelectedFlag = true
+        }
+        else {
+          this.msgs = [{ severity: 'error', summary: 'ServerError', detail: 'Trouble fetching current Statistics of Selected Stock, try again' }];
+        }
       }, err => {
-        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble fetching current Statistics of Selected Stock, try again' }];
+        this.msgs = [{ severity: 'error', summary: 'NetworkError', detail: 'Server down. Trouble fetching current Statistics of Selected Stock, try again' }];
       }
     )
   }
 
   applyDarkTheme() {
-    this.basicOptions = {
+    this.chartConfigOptions = {
       legend: {
         labels: {
           fontColor: '#ebedef'
@@ -107,7 +113,7 @@ export class UserHistoryComponent implements OnInit {
   }
 
   renderSelectedStockChart() {
-    this.basicData = {
+    this.chartData = {
       labels: this.listOfDates,
       datasets: [
         {

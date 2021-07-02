@@ -27,8 +27,9 @@ import { MessagesModule } from 'primeng/messages';
 
 import { CarouselModule } from 'primeng/carousel';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 @NgModule({
   imports: [
@@ -43,8 +44,9 @@ import { TooltipModule } from 'primeng/tooltip';
     MessagesModule,
     CarouselModule,
     InputSwitchModule,
-    ToastModule,
     TooltipModule,
+
+    ProgressSpinnerModule,
     
     BrowserAnimationsModule,
     FormsModule,

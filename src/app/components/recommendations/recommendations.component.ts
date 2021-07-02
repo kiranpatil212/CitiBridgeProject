@@ -7,7 +7,6 @@ import { RecommendationsService } from 'src/app/services/recommendations.service
 import { UserHistoryService } from 'src/app/services/user-history.service';
 import { UserHistory } from 'src/app/models/user-history';
 
-
 interface Sector {
   nameS: string,
   codeS: string
@@ -54,8 +53,8 @@ export class RecommendationsComponent implements OnInit {
 
   selectedStock: UserStock;
 
-  basicData: any;
-  basicOptions: any;
+  chartData: any;
+  chartConfigOptions: any;
 
   cols: any[];
 
@@ -84,20 +83,12 @@ export class RecommendationsComponent implements OnInit {
       { nameP: 'Market Capital', codeP: 'MARKET_CAP' }
     ];
 
-    this.cols = [
-      { field: 'companySymbol', header: 'Stock' },
-      { field: 'companyName', header: 'Company' },
-      { field: 'open', header: 'Open' },
-      { field: 'close', header: 'Close' },
-      { field: 'high', header: 'High' },
-      { field: 'low', header: 'Low' }];
-
   }
 
   ngOnInit() { }
 
   applyDarkTheme() {
-    this.basicOptions = {
+    this.chartConfigOptions = {
       legend: {
         labels: {
           fontColor: '#ebedef'
@@ -146,7 +137,7 @@ export class RecommendationsComponent implements OnInit {
       },
       reject: () => {
         this.flag = false
-        this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'Stock not Saved' }];
+        this.msgs = [{ severity: 'error', summary: 'Rejected', detail: 'Stock not Saved' }];
       },
       key: "positionDialog"
     });
@@ -164,9 +155,14 @@ export class RecommendationsComponent implements OnInit {
 
     this.recommendationsService.saveStockSelectedByUser(stockToSave).subscribe(
       data => {
-        this.msgs = [{ severity: 'success', summary: 'SuccessFul', detail: 'Stock saved successfully' }];
+        if (data != null) {
+          this.msgs = [{ severity: 'success', summary: 'SuccessFul', detail: 'Stock saved successfully' }];
+        }
+        else {
+          this.msgs = [{ severity: 'warn', summary: 'ServerError', detail: 'Stock could not be saved, try again' }];
+        }
       }, err => {
-        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server down. Stock could not be saved, try again' }];
+        this.msgs = [{ severity: 'error', summary: 'NetworkError', detail: 'Server down. Stock could not be saved, try again' }];
       }
     )
   }
@@ -174,42 +170,49 @@ export class RecommendationsComponent implements OnInit {
   getRecommendations() {
     this.recommendationsService.getUserRecommendationsByParamaters(this.selectedSector.codeS, this.selectedParameter.codeP).subscribe(
       (data: UserStock[]) => {
-        this.listOfRecommendationsForUser = data
-        this.listOfXaxisCompanySymbols = data.map(data => data.companySymbol)
-        this.listOfOpenValues = data.map(data => data.open)
-        this.listOfCloseValues = data.map(data => data.close)
-        this.listOfHighValues = data.map(data => data.high)
-        this.listOfLowValues = data.map(data => data.low)
+        if (data != null && data.length > 0) {
+          this.cols = [
+            { field: 'companySymbol', header: 'Stock' },
+            { field: 'companyName', header: 'Company' },
+            { field: 'open', header: 'Open' },
+            { field: 'close', header: 'Close' },
+            { field: 'high', header: 'High' },
+            { field: 'low', header: 'Low' }
+          ];
+          
+          this.listOfRecommendationsForUser = data
+          this.listOfXaxisCompanySymbols = data.map(data => data.companySymbol)
+          this.listOfOpenValues = data.map(data => data.open)
+          this.listOfCloseValues = data.map(data => data.close)
+          this.listOfHighValues = data.map(data => data.high)
+          this.listOfLowValues = data.map(data => data.low)
 
-        if (this.selectedParameter.codeP == "CHANGE") {
+          if (this.selectedParameter.codeP == "CHANGE") {
+            this.cols.push({ field: 'change', header: 'Change' });
+          }
+          if (this.selectedParameter.codeP == "PE_RATIO") {
+            this.cols.push({ field: 'peRatio', header: 'PE Ratio' });
+          }
+          if (this.selectedParameter.codeP == "MARKET_CAP") {
+            this.cols.push({ field: 'marketCap', header: 'Market Capital' });
+          }
 
-          this.cols.push({ field: 'change', header: 'Change' });
+          this.renderComparisonChart()
+          this.renderData = true
+          this.showChart = true
         }
-
-        if (this.selectedParameter.codeP == "PE_RATIO") {
-
-          this.cols.push({ field: 'peRatio', header: 'PE Ratio' });
-
+        else {
+          this.msgs = [{ severity: 'error', summary: 'ServerError', detail: 'Trouble getting User recommendations, try again' }];
         }
-
-        if (this.selectedParameter.codeP == "MARKET_CAP") {
-
-          this.cols.push({ field: 'marketCap', header: 'Market Capital' });
-        }
-
-        this.renderComparisonChart()
-        this.renderData = true
-        this.showChart = true
-
       }, err => {
-        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting User recommendations, try again' }];
+        this.msgs = [{ severity: 'error', summary: 'NetworkError', detail: 'Server down. Trouble getting User recommendations, try again' }];
       }
     )
   }
 
   renderComparisonChart() {
 
-    this.basicData = {
+    this.chartData = {
       labels: this.listOfXaxisCompanySymbols,
       datasets: [
         {

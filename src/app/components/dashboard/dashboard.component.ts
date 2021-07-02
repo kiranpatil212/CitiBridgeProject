@@ -45,37 +45,49 @@ export class DashboardComponent implements OnInit {
         numScroll: 1
       }
     ];
-
   }
 
   ngOnInit() {
 
     this.dashboardService.getLatestNews().subscribe(
       data => {
-        this.latestNews = data.articles
+        if (data != null && data.articles.length > 0) {
+          this.latestNews = data.articles
+        }
+        else {
+          this.msgs = [{ severity: 'error', summary: 'ServerError', detail: 'STrouble getting latest news, try again' }];
+        }
       }, err => {
-        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting latest news, try again' }];
+        this.msgs = [{ severity: 'error', summary: 'NetworkError', detail: 'Server Down. Trouble getting latest news, try again' }];
       }
     )
 
     this.dashboardService.getSectorWiseComparison().subscribe(
       data => {
-        this.listOfSectors = data.map(data => data.sector)
-        this.listOfAvgGrowth = data.map(data => data.avggrowth)
-        this.renderSectorsTable()
-
+        if (data != null && data.length > 0) {
+          this.listOfSectors = data.map(data => data.sector)
+          this.listOfAvgGrowth = data.map(data => data.avgGrowth)
+          this.renderSectorsTable()
+        }
+        else {
+          this.msgs = [{ severity: 'error', summary: 'ServerError', detail: 'Trouble getting Sector Wise Comparison, try again' }];
+        }
       }, err => {
-        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting Sector Wise Comparison, try again' }];
+        this.msgs = [{ severity: 'error', summary: 'NetworkError', detail: 'Server down. Trouble getting Sector Wise Comparison, try again' }];
       }
     );
 
     this.dashboardService.getTopPerformingStockDetails().subscribe(
       data => {
-        this.stockFlag = true
-        this.topPerformingStock = data
-
+        if (data != null) {
+          this.topPerformingStock = data
+          this.stockFlag = true
+        }
+        else {
+          this.msgs = [{ severity: 'error', summary: 'ServerError', detail: 'Trouble getting Top Performing Stock, try again' }];
+        }
       }, err => {
-        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting Top Performing Stock, try again' }];
+        this.msgs = [{ severity: 'error', summary: 'NetworkError', detail: 'Server down. Trouble getting Top Performing Stock, try again' }];
       }
     );
 
@@ -110,7 +122,7 @@ export class DashboardComponent implements OnInit {
           },
           ticks: {
             suggestedMin: 60,
-            suggestedMax: 120,
+            suggestedMax: 60,
             padding: 20,
             fontColor: "#9e9e9e"
           }
@@ -150,7 +162,7 @@ export class DashboardComponent implements OnInit {
       data: {
         labels: this.listOfSectors,
         datasets: [{
-          label: "Sectors",
+          label: "Avg Growth",
           fill: true,
           backgroundColor: gradientStroke,
           hoverBackgroundColor: gradientStroke,

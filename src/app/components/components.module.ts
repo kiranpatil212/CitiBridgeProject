@@ -18,12 +18,13 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 @NgModule({
   imports: [CommonModule, RouterModule, NgbModule, DropdownModule, TableModule, ChartModule, TabViewModule, ButtonModule,
-    FormsModule, ConfirmDialogModule, DialogModule, InputTextModule, MessagesModule, InputSwitchModule, ToastModule, TooltipModule],
+    FormsModule, ConfirmDialogModule, DialogModule, InputTextModule, MessagesModule, InputSwitchModule, TooltipModule, ProgressSpinnerModule],
   declarations: [SidebarComponent, UserHistoryComponent, RecommendationsComponent],
   exports: [SidebarComponent]
 })

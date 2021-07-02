@@ -1,5 +1,5 @@
+<!-- <p-messages [value]="msgs"></p-messages> -->
 <div class="content">
-
   <div class=" row">
     <div class=" col-lg-12">
       <div class=" card card-chart">
@@ -11,11 +11,11 @@
         </div>
         <div class=" card-body">
           <div class=" chart-area">
+            <!-- <p-progressSpinner></p-progressSpinner> -->
             <canvas id="SectorChart"> </canvas>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -60,7 +60,6 @@
         </div>
         <div class=" card-body">
           <h4 *ngIf="stockFlag">
-
             <div class="row">
               <div class="col-md-12" style="text-align: center;">
                 <h1 style="color: #1DCEF1;">{{topPerformingStock.companySymbol}}</h1>
