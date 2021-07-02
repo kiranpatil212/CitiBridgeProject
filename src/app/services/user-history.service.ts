@@ -26,8 +26,4 @@ export class UserHistoryService {
   deleteStocksFromUserHistory(ids: Number[]): Observable<any> {
     return this.http.post(this.backendUrl + "/userHistory/deleteSavedStocksByUserId", ids)
   }
-
-  saveStockSelectedByUser(stockToSave: UserHistory):  Observable<any> {
-    return this.http.post(this.backendUrl + "/userHistory/saveStocks",stockToSave);
-  }
 }

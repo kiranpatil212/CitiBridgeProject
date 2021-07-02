@@ -50,13 +50,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.getLatestNews();
-   this.getSectorWiseComparison();
-    this.getTopPerformingStockDetails();
-
-  }
-
-  getLatestNews(){
     this.dashboardService.getLatestNews().subscribe(
       data => {
         this.latestNews = data.articles
@@ -65,22 +58,6 @@ export class DashboardComponent implements OnInit {
       }
     )
 
-  }
-
-  getTopPerformingStockDetails() {
-
-    this.dashboardService.getTopPerformingStockDetails().subscribe(
-      data => {
-        this.stockFlag = true
-        this.topPerformingStock = data
-
-      }, err => {
-        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting Top Performing Stock, try again' }];
-      }
-    );
-  }
-
-  getSectorWiseComparison(){
     this.dashboardService.getSectorWiseComparison().subscribe(
       data => {
         this.listOfSectors = data.map(data => data.sector)
@@ -91,6 +68,17 @@ export class DashboardComponent implements OnInit {
         this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting Sector Wise Comparison, try again' }];
       }
     );
+
+    this.dashboardService.getTopPerformingStockDetails().subscribe(
+      data => {
+        this.stockFlag = true
+        this.topPerformingStock = data
+
+      }, err => {
+        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server Error. Trouble getting Top Performing Stock, try again' }];
+      }
+    );
+
   }
 
   renderSectorsTable() {

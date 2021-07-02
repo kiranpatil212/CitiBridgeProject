@@ -59,7 +59,7 @@ export class RecommendationsComponent implements OnInit {
 
   cols: any[];
 
-  constructor(private recommendationsService: RecommendationsService, 
+  constructor(private recommendationsService: RecommendationsService,
     private confirmationService: ConfirmationService,
     private userHistoryService: UserHistoryService) {
 
@@ -154,7 +154,7 @@ export class RecommendationsComponent implements OnInit {
 
   saveStockSelectedByUser() {
 
-    let stockToSave : UserHistory = new UserHistory();
+    let stockToSave: UserHistory = new UserHistory();
     stockToSave.companySymbol = this.selectedStock.companySymbol;
     stockToSave.userId = sessionStorage.getItem("loggedInUser");
     stockToSave.sector = this.selectedSector.codeS;
@@ -162,11 +162,11 @@ export class RecommendationsComponent implements OnInit {
     stockToSave.price = this.selectedStock.close;
 
 
-    this.userHistoryService.saveStockSelectedByUser(stockToSave).subscribe(
+    this.recommendationsService.saveStockSelectedByUser(stockToSave).subscribe(
       data => {
-       this.msgs = [{ severity: 'success', summary: 'SuccessFul', detail: 'Stock saved successfully' }];
+        this.msgs = [{ severity: 'success', summary: 'SuccessFul', detail: 'Stock saved successfully' }];
       }, err => {
-        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server down. Stock could not saved, try again' }];
+        this.msgs = [{ severity: 'danger', summary: 'ServerError', detail: 'Server down. Stock could not be saved, try again' }];
       }
     )
   }
@@ -189,7 +189,7 @@ export class RecommendationsComponent implements OnInit {
         if (this.selectedParameter.codeP == "PE_RATIO") {
 
           this.cols.push({ field: 'peRatio', header: 'PE Ratio' });
-          
+
         }
 
         if (this.selectedParameter.codeP == "MARKET_CAP") {

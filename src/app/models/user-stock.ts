@@ -15,9 +15,6 @@ export class UserStock {
 	returnOnEquity : number ;
 	history : StockHistory[] ;
 
-
-
     constructor() {  }
-
 
 }

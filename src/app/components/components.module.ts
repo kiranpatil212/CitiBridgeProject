@@ -20,15 +20,11 @@ import { MessagesModule } from 'primeng/messages';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
-import { DashboardService } from "../services/dashboard.service";
-import { RecommendationsService } from "../services/recommendations.service";
-import { UserHistoryService } from "../services/user-history.service";
 
 @NgModule({
   imports: [CommonModule, RouterModule, NgbModule, DropdownModule, TableModule, ChartModule, TabViewModule, ButtonModule,
     FormsModule, ConfirmDialogModule, DialogModule, InputTextModule, MessagesModule, InputSwitchModule, ToastModule, TooltipModule],
   declarations: [SidebarComponent, UserHistoryComponent, RecommendationsComponent],
-  providers:[DashboardService, RecommendationsService, UserHistoryService],
   exports: [SidebarComponent]
 })
 export class ComponentsModule { }
