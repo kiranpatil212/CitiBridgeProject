@@ -24,12 +24,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from "primeng/dialog";
 import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages';
-
 import { CarouselModule } from 'primeng/carousel';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { TooltipModule } from 'primeng/tooltip';
-
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   imports: [
@@ -45,9 +44,9 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     CarouselModule,
     InputSwitchModule,
     TooltipModule,
-
     ProgressSpinnerModule,
-    
+    ToastModule,
+
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,

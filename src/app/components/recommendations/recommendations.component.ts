@@ -1,11 +1,9 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { UserStock } from 'src/app/models/user-stock';
 import { ConfirmationService } from 'primeng/api';
-import { Message } from 'primeng/api';
-import Chart from 'chart.js';
 import { RecommendationsService } from 'src/app/services/recommendations.service';
-import { UserHistoryService } from 'src/app/services/user-history.service';
 import { UserHistory } from 'src/app/models/user-history';
+import { MessageService } from 'primeng/api';
 
 interface Sector {
   nameS: string,
@@ -21,7 +19,7 @@ interface Parameter {
   selector: 'app-recommendations',
   templateUrl: './recommendations.component.html',
   styleUrls: ['./recommendations.component.scss'],
-  providers: [ConfirmationService]
+  providers: [ConfirmationService, MessageService]
 })
 
 
@@ -44,23 +42,18 @@ export class RecommendationsComponent implements OnInit {
   listOfHighValues: Number[];
   listOfLowValues: Number[];
 
-  msgs: Message[] = [];
-
   position: string;
   displayPosition: boolean;
   volume: string;
   public flag: boolean = false;
-
   selectedStock: UserStock;
 
   chartData: any;
   chartConfigOptions: any;
-
   cols: any[];
 
   constructor(private recommendationsService: RecommendationsService,
-    private confirmationService: ConfirmationService,
-    private userHistoryService: UserHistoryService) {
+    private confirmationService: ConfirmationService, private messageService: MessageService) {
 
     this.sector = [
       { nameS: 'Automobile', codeS: 'AUTOMOBILE' },
@@ -133,11 +126,10 @@ export class RecommendationsComponent implements OnInit {
       accept: () => {
         this.flag = true
         this.saveStockSelectedByUser()
-        this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'Stock Saved' }];
       },
       reject: () => {
         this.flag = false
-        this.msgs = [{ severity: 'error', summary: 'Rejected', detail: 'Stock not Saved' }];
+        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Stock not Saved' });
       },
       key: "positionDialog"
     });
@@ -156,13 +148,13 @@ export class RecommendationsComponent implements OnInit {
     this.recommendationsService.saveStockSelectedByUser(stockToSave).subscribe(
       data => {
         if (data != null) {
-          this.msgs = [{ severity: 'success', summary: 'SuccessFul', detail: 'Stock saved successfully' }];
+          this.messageService.add({ severity: 'success', summary: 'SuccessFul', detail: 'Stock saved successfully' });
         }
         else {
-          this.msgs = [{ severity: 'warn', summary: 'ServerError', detail: 'Stock could not be saved, try again' }];
+          this.messageService.add({ severity: 'warn', summary: 'NetworkError', detail: 'Stock could not be saved, try again' });
         }
       }, err => {
-        this.msgs = [{ severity: 'error', summary: 'NetworkError', detail: 'Server down. Stock could not be saved, try again' }];
+        this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Server down. Stock could not be saved, try again' });
       }
     )
   }
@@ -202,10 +194,10 @@ export class RecommendationsComponent implements OnInit {
           this.showChart = true
         }
         else {
-          this.msgs = [{ severity: 'error', summary: 'ServerError', detail: 'Trouble getting User recommendations, try again' }];
+          this.messageService.add({ severity: 'error', summary: 'NetworkError', detail: 'Trouble getting User recommendations, try again' });
         }
       }, err => {
-        this.msgs = [{ severity: 'error', summary: 'NetworkError', detail: 'Server down. Trouble getting User recommendations, try again' }];
+        this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Server down. Trouble getting User recommendations, try again' });
       }
     )
   }

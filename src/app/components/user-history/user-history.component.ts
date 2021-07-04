@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import Chart from 'chart.js';
-import { NgForm } from '@angular/forms';
 import { UserHistory } from 'src/app/models/user-history';
 import { UserStock } from 'src/app/models/user-stock';
 import { StockHistory } from 'src/app/models/stock-history';
-import { Message } from 'primeng/api';
 import { UserHistoryService } from 'src/app/services/user-history.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-user-history',
   templateUrl: './user-history.component.html',
-  styleUrls: ['./user-history.component.scss']
+  styleUrls: ['./user-history.component.scss'],
+  providers: [MessageService]
 })
 export class UserHistoryComponent implements OnInit {
 
@@ -30,9 +29,7 @@ export class UserHistoryComponent implements OnInit {
   chartData: any;
   chartConfigOptions: any;
 
-  msgs: Message[] = [];
-
-  constructor(private userHistoryService: UserHistoryService) { }
+  constructor(private userHistoryService: UserHistoryService, private messageService: MessageService) { }
 
   ngOnInit() {
 
@@ -44,10 +41,10 @@ export class UserHistoryComponent implements OnInit {
             this.getSelectedStockDetails(this.listOfUserHistory[0])
           }
           else {
-            this.msgs = [{ severity: 'error', summary: 'ServerError', detail: 'Trouble getting History of Selected Stock, try again' }];
+            this.messageService.add({ severity: 'error', summary: 'NetworkError', detail: 'Trouble getting History of Saved Stocks, try again' });
           }
         }, err => {
-          this.msgs = [{ severity: 'error', summary: 'NetworkError', detail: 'Server down. Trouble getting History of Selected Stock, try again' }];
+          this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Trouble getting History of Saved Stocks, try again' });
         }
       )
     }
@@ -75,10 +72,10 @@ export class UserHistoryComponent implements OnInit {
           this.stockSelectedFlag = true
         }
         else {
-          this.msgs = [{ severity: 'error', summary: 'ServerError', detail: 'Trouble fetching current Statistics of Selected Stock, try again' }];
+          this.messageService.add({severity:'error', summary: 'ServerError', detail: 'Trouble fetching current Statistics of Selected Stock, try again'});
         }
       }, err => {
-        this.msgs = [{ severity: 'error', summary: 'NetworkError', detail: 'Server down. Trouble fetching current Statistics of Selected Stock, try again' }];
+        this.messageService.add({severity:'error', summary: 'NetworkError', detail: 'Server down. Trouble fetching current Statistics of Selected Stock, try again'});
       }
     )
   }

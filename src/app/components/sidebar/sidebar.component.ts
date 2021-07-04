@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
 declare interface RouteInfo {
   path: string;
@@ -27,14 +28,7 @@ export const ROUTES: RouteInfo[] = [
     title: "Propositions",
     icon: "icon-tap-02",
     class: ""
-  },
-
-  {
-    path: "logout",
-    title: "Log Out",
-    icon: "icon-button-power",
-    class: ""
-  },
+  }
 
 ];
 
@@ -47,7 +41,7 @@ export class SidebarComponent implements OnInit {
   menuItems: any[];
   userName: string;
   
-  constructor() { }
+  constructor(private router : Router) { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
@@ -58,5 +52,9 @@ export class SidebarComponent implements OnInit {
       return false;
     }
     return true;
+  }
+  logout() {
+    sessionStorage.clear();
+    this.router.navigate(["/login"])
   }
 }

@@ -1,4 +1,4 @@
-<!-- <p-messages [value]="msgs"></p-messages> -->
+<p-toast></p-toast>
 <div class="content">
   <div class=" row">
     <div class=" col-lg-12">
@@ -10,8 +10,10 @@
           </h2>
         </div>
         <div class=" card-body">
+          <div *ngIf="!sectorWiseDataFlag" style="text-align: center;">
+            <p-progressSpinner></p-progressSpinner>
+          </div>
           <div class=" chart-area">
-            <!-- <p-progressSpinner></p-progressSpinner> -->
             <canvas id="SectorChart"> </canvas>
           </div>
         </div>
@@ -59,6 +61,9 @@
           </div>
         </div>
         <div class=" card-body">
+          <div *ngIf="!stockFlag" style="text-align: center;">
+            <p-progressSpinner></p-progressSpinner>
+          </div>
           <h4 *ngIf="stockFlag">
             <div class="row">
               <div class="col-md-12" style="text-align: center;">

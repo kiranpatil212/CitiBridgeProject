@@ -97,63 +97,63 @@ black-dashboard-angular
 │   │   ├── app.component.spec.ts
 │   │   ├── app.component.ts
 │   │   ├── app.module.ts
+│   │   ├── auth.guard.spec.ts
+│   │   ├── auth.guard.ts
 │   │   ├── components
 │   │   │   ├── components.module.ts
-│   │   │   ├── footer
-│   │   │   │   ├── footer.component.css
-│   │   │   │   ├── footer.component.html
-│   │   │   │   ├── footer.component.spec.ts
-│   │   │   │   └── footer.component.ts
-│   │   │   ├── navbar
-│   │   │   │   ├── navbar.component.css
-│   │   │   │   ├── navbar.component.html
-│   │   │   │   ├── navbar.component.spec.ts
-│   │   │   │   └── navbar.component.ts
-│   │   │   └── sidebar
-│   │   │       ├── sidebar.component.css
-│   │   │       ├── sidebar.component.html
-│   │   │       ├── sidebar.component.spec.ts
-│   │   │       └── sidebar.component.ts
+│   │   │   ├── dashboard
+│   │   │   │   ├── dashboard.component.css
+│   │   │   │   ├── dashboard.component.html
+│   │   │   │   ├── dashboard.component.spec.ts
+│   │   │   │   └── dashboard.component.ts
+│   │   │   ├── login
+│   │   │   │   ├── login.component.css
+│   │   │   │   ├── login.component.html
+│   │   │   │   ├── login.component.spec.ts
+│   │   │   │   └── login.component.ts
+│   │   │   ├── recommendations
+│   │   │   │   ├── recommendations.component.css
+│   │   │   │   ├── recommendations.component.html
+│   │   │   │   ├── recommendations.component.spec.ts
+│   │   │   │   └── recommendations.component.ts
+│   │   │   ├── sidebar
+│   │   │   │   ├── sidebar.component.css
+│   │   │   │   ├── sidebar.component.html
+│   │   │   │   ├── sidebar.component.spec.ts
+│   │   │   │   └── sidebar.component.ts
+│   │   │   └── user-history
+│   │   │       ├── user-history.component.html
+│   │   │       ├── user-history.component.scss
+│   │   │       ├── user-history.component.spec.ts
+│   │   │       └── user-history.component.ts
 │   │   ├── layouts
-│   │   │   ├── admin-layout
-│   │   │   │   ├── admin-layout.component.html
-│   │   │   │   ├── admin-layout.component.scss
-│   │   │   │   ├── admin-layout.component.spec.ts
-│   │   │   │   ├── admin-layout.component.ts
-│   │   │   │   ├── admin-layout.module.ts
-│   │   │   │   └── admin-layout.routing.ts
-│   │   │   └── auth-layout
-│   │   │       ├── auth-layout.component.html
-│   │   │       ├── auth-layout.component.scss
-│   │   │       ├── auth-layout.component.spec.ts
-│   │   │       ├── auth-layout.component.ts
-│   │   │       ├── auth-layout.module.ts
-│   │   │       └── auth-layout.routing.ts
-│   │   └── pages
-│   │       ├── dashboard
-│   │       │   ├── dashboard.component.html
-│   │       │   └── dashboard.component.ts
-│   │       ├── icons
-│   │       │   ├── icons.component.html
-│   │       │   └── icons.component.ts
-│   │       ├── map
-│   │       │   ├── map.component.html
-│   │       │   └── map.component.ts
-│   │       ├── notifications
-│   │       │   ├── notifications.component.html
-│   │       │   └── notifications.component.ts
-│   │       ├── rtl
-│   │       │   ├── rtl.component.html
-│   │       │   └── rtl.component.ts
-│   │       ├── tables
-│   │       │   ├── tables.component.html
-│   │       │   └── tables.component.ts
-│   │       ├── typography
-│   │       │   ├── typography.component.html
-│   │       │   └── typography.component.ts
-│   │       └── user
-│   │           ├── user.component.html
-│   │           └── user.component.ts
+│   │   │   └── admin-layout
+│   │   │       ├── admin-layout.component.html
+│   │   │       ├── admin-layout.component.scss
+│   │   │       ├── admin-layout.component.spec.ts
+│   │   │       ├── admin-layout.component.ts
+│   │   │       ├── admin-layout.module.ts
+│   │   │       └── admin-layout.routing.ts
+│   │   ├── models
+│   │   │   ├── news-article.spec.ts
+│   │   │   ├── news-article.ts
+│   │   │   ├── stock-history.spec.ts
+│   │   │   ├── stock-history.ts
+│   │   │   ├── user-history.spec.ts
+│   │   │   ├── user-history.ts
+│   │   │   ├── user-stock.spec.ts
+│   │   │   ├── user-stock.ts
+│   │   │   ├── user.spec.ts
+│   │   │   └── user.ts
+│   │   ├── services
+│   │   │   ├── dashboard.service.spec.ts
+│   │   │   ├── dashboard.service.ts
+│   │   │   ├── login.service.spec.ts
+│   │   │   ├── login.service.ts
+│   │   │   ├── recommendations.service.spec.ts
+│   │   │   ├── recommendations.service.ts
+│   │   │   ├── user-history.service.spec.ts
+│   │   │   └── user-history.service.ts
 │   ├── assets
 │   │   ├── css
 │   │   ├── demo

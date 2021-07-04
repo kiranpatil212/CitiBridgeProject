@@ -7,9 +7,10 @@ import { FormsModule } from "@angular/forms";
 import { AdminLayoutRoutes } from "./admin-layout.routing";
 import { DashboardComponent } from "../../components/dashboard/dashboard.component";
 
-import {CarouselModule} from 'primeng/carousel';
-import {ButtonModule} from 'primeng/button';
-
+import { CarouselModule } from 'primeng/carousel';
+import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ToastModule } from 'primeng/toast';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
@@ -19,12 +20,13 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
     FormsModule,
     HttpClientModule,
     NgbModule,
-
+    ProgressSpinnerModule,
     CarouselModule,
-    ButtonModule
+    ButtonModule,
+    ToastModule
   ],
   declarations: [
     DashboardComponent,
   ]
 })
-export class AdminLayoutModule {}
+export class AdminLayoutModule { }
