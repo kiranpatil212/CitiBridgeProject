@@ -58,6 +58,7 @@ export class UserHistoryComponent implements OnInit {
   }
 
   getSelectedStockDetails(companyData) {
+    this.stockSelectedFlag = false
     let companySymbol = companyData.companySymbol
     this.selectedStockSymbol = companySymbol
 

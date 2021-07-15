@@ -3,7 +3,7 @@ import Chart from 'chart.js';
 import { NewsArticle } from "src/app/models/news-article";
 import { UserStock } from "src/app/models/user-stock";
 import { DashboardService } from "src/app/services/dashboard.service";
-import {MessageService} from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: "app-dashboard",
@@ -20,7 +20,8 @@ export class DashboardComponent implements OnInit {
   public listOfAvgGrowth: Number[] = [];
   public topPerformingStock: UserStock;
   public sectorWiseDataFlag: boolean = false;
-  public stockFlag: boolean = false;
+  public newsDataFlag: boolean = false;
+  public topStockFlag: boolean = false;
 
   public latestNews: any;
   public newsArticles: NewsArticle[];
@@ -54,12 +55,13 @@ export class DashboardComponent implements OnInit {
       data => {
         if (data != null && data.articles.length > 0) {
           this.latestNews = data.articles
+          this.newsDataFlag = true
         }
         else {
-          this.messageService.add({severity:'error', summary: 'NetworkError', detail: 'Trouble getting latest news, try again'});
+          this.messageService.add({ severity: 'error', summary: 'NetworkError', detail: 'Trouble getting latest news, try again' });
         }
       }, err => {
-        this.messageService.add({severity:'error', summary: 'ServerError', detail: 'Server Down. Trouble getting latest news, try again'});
+        this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Server Down. Trouble getting latest news, try again' });
       }
     )
 
@@ -70,13 +72,13 @@ export class DashboardComponent implements OnInit {
           this.listOfAvgGrowth = data.map(data => data.avgGrowth)
           this.sectorWiseDataFlag = true
           this.renderSectorsTable()
-          
+
         }
         else {
-          this.messageService.add({severity:'error', summary: 'NetworkError', detail: 'Trouble getting Sector Wise Comparison, try again'});
+          this.messageService.add({ severity: 'error', summary: 'NetworkError', detail: 'Trouble getting Sector Wise Comparison, try again' });
         }
       }, err => {
-        this.messageService.add({severity:'error', summary: 'ServerError', detail: 'Server down. Trouble getting Sector Wise Comparison, try again'});
+        this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Server down. Trouble getting Sector Wise Comparison, try again' });
       }
     );
 
@@ -84,13 +86,13 @@ export class DashboardComponent implements OnInit {
       data => {
         if (data != null) {
           this.topPerformingStock = data
-          this.stockFlag = true
+          this.topStockFlag = true
         }
         else {
-          this.messageService.add({severity:'error', summary: 'NetworkError', detail: 'Trouble getting Top Performing Stock, try again'});
+          this.messageService.add({ severity: 'error', summary: 'NetworkError', detail: 'Trouble getting Top Performing Stock, try again' });
         }
       }, err => {
-        this.messageService.add({severity:'error', summary: 'ServerError', detail: 'Server down. Trouble getting Top Performing Stock, try again'});
+        this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Server down. Trouble getting Top Performing Stock, try again' });
       }
     );
 

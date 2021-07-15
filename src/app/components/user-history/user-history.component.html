@@ -61,7 +61,7 @@
           <div *ngIf="!stockSelectedFlag" style="text-align: center;">
             <p-progressSpinner></p-progressSpinner>
           </div>
-          <h4 *ngIf="stockSelectedFlag">
+          <div *ngIf="stockSelectedFlag">
             <div class="row">
               <div class="col-md-12" style="text-align: center;">
                 <h2 style="color: #1DCEF1;">{{selectedStock.companySymbol}}</h2>
@@ -113,7 +113,8 @@
                 </h4>
               </div>
             </div>
-          </h4>
+          </div>
+
         </div>
       </div>
     </div>
