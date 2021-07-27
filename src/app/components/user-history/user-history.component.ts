@@ -25,6 +25,7 @@ export class UserHistoryComponent implements OnInit {
   listOfselectedStockHistory: StockHistory[];
   listOfAdjCloseValues: Number[];
   listOfDates: string[];
+  ids: Number[];
 
   chartData: any;
   chartConfigOptions: any;
@@ -77,6 +78,23 @@ export class UserHistoryComponent implements OnInit {
         }
       }, err => {
         this.messageService.add({severity:'error', summary: 'NetworkError', detail: 'Server down. Trouble fetching current Statistics of Selected Stock, try again'});
+      }
+    )
+  }
+
+  deleteSelectedStocks() {
+    this.ids = this.selectedStocks.map(data => data.id)
+    this.userHistoryService.deleteStocksFromUserHistory(this.ids).subscribe(
+      (data: boolean) => {
+        if(data == true){
+          location.reload();
+        }
+        else {
+          this.messageService.add({severity:'warn', summary: 'No Stocks Selected', detail: 'Please select stocks to delete.'});
+          this.selectedStocks = null;
+        }
+      }, err => {
+        this.messageService.add({severity:'error', summary: 'ServerError', detail: 'Trouble deleting selected Stocks, try again'});
       }
     )
   }

@@ -2,10 +2,15 @@
 <div class=" content">
   <div class=" row">
     <div class=" col-lg-6">
-      <p-table [columns]="cols" [value]="listOfUserHistory" paginator="true" rows="11" [alwaysShowPaginator]="false"
+      <p-table [columns]="cols" [value]="listOfUserHistory" paginator="true" rows="9" [alwaysShowPaginator]="false"
         [(selection)]="selectedStocks" [rowHover]="true">
         <ng-template pTemplate="header" let-columns>
           <tr>
+
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+
             <th *ngFor="let col of columns" style="text-align: center;" [pSortableColumn]="col.field"
               colspan="col.colspan">
               {{col.header}}
@@ -15,7 +20,11 @@
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
           <tr>
+            <td>
+              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+            </td>
             <ng-container *ngFor="let col of columns">
+
               <td *ngIf="col.field == 'companySymbol'" style="text-align: center;">
                 <a class="hyperlink" (click)="getSelectedStockDetails(rowData)"
                   style="color: blue;"><u>{{rowData[col.field]}}</u></a>
@@ -30,6 +39,9 @@
           </tr>
         </ng-template>
       </p-table>
+
+      <br><br>
+      <button [disabled]="selectedStocks == null" type="submit" class="btn btn-success" style="color: darkslateblue; font-size: medium;" (click)="deleteSelectedStocks()">DELETE SELECTED STOCKS</button>
     </div>
 
     <div class=" col-lg-6">

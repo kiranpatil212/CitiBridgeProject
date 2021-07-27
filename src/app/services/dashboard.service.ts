@@ -13,7 +13,7 @@ export class DashboardService {
   constructor(private http: HttpClient) { }
 
   getLatestNews(): Observable<any> {
-    return this.http.get("https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=fe85013235624481abbe65c9f37baf27")
+    return this.http.get(this.backendUrl + "/sectorStocks/getNews")
   }
 
   getSectorWiseComparison(): Observable<any> {

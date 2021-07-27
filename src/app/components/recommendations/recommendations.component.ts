@@ -148,7 +148,7 @@ export class RecommendationsComponent implements OnInit {
     this.recommendationsService.saveStockSelectedByUser(stockToSave).subscribe(
       data => {
         if (data != null) {
-          this.messageService.add({ severity: 'success', summary: 'SuccessFul', detail: 'Stock saved successfully' });
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Stock saved successfully' });
         }
         else {
           this.messageService.add({ severity: 'warn', summary: 'NetworkError', detail: 'Stock could not be saved, try again' });

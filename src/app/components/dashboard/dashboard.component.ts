@@ -53,8 +53,8 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.getLatestNews().subscribe(
       data => {
-        if (data != null && data.articles.length > 0) {
-          this.latestNews = data.articles
+        if (data != null && data.length > 0) {
+          this.latestNews = data
           this.newsDataFlag = true
         }
         else {
@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
       }, err => {
         this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Server Down. Trouble getting latest news, try again' });
       }
-    )
+    );
 
     this.dashboardService.getSectorWiseComparison().subscribe(
       data => {
