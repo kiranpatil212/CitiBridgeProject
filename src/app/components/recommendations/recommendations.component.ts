@@ -67,7 +67,6 @@ export class RecommendationsComponent implements OnInit {
       { nameS: 'Metal', codeS: 'METAL' },
       { nameS: 'Pharma', codeS: 'PHARMA' },
       { nameS: 'Telecom', codeS: 'TELECOM' }
-
     ];
 
     this.parameter = [
@@ -108,6 +107,50 @@ export class RecommendationsComponent implements OnInit {
     };
 
   }
+
+  getRecommendations() {
+    this.recommendationsService.getUserRecommendationsByParamaters(this.selectedSector.codeS, this.selectedParameter.codeP).subscribe(
+      (data: UserStock[]) => {
+        if (data != null && data.length > 0) {
+          this.cols = [
+            { field: 'companySymbol', header: 'Stock' },
+            { field: 'companyName', header: 'Company' },
+            { field: 'open', header: 'Open' },
+            { field: 'close', header: 'Close' },
+            { field: 'high', header: 'High' },
+            { field: 'low', header: 'Low' }
+          ];
+          
+          this.listOfRecommendationsForUser = data
+          this.listOfXaxisCompanySymbols = data.map(data => data.companySymbol)
+          this.listOfOpenValues = data.map(data => data.open)
+          this.listOfCloseValues = data.map(data => data.close)
+          this.listOfHighValues = data.map(data => data.high)
+          this.listOfLowValues = data.map(data => data.low)
+
+          if (this.selectedParameter.codeP == "CHANGE") {
+            this.cols.push({ field: 'change', header: 'Change' });
+          }
+          if (this.selectedParameter.codeP == "PE_RATIO") {
+            this.cols.push({ field: 'peRatio', header: 'PE Ratio' });
+          }
+          if (this.selectedParameter.codeP == "MARKET_CAP") {
+            this.cols.push({ field: 'marketCap', header: 'Market Capital' });
+          }
+
+          this.renderComparisonChart()
+          this.renderData = true
+          this.showChart = true
+        }
+        else {
+          this.messageService.add({ severity: 'error', summary: 'NetworkError', detail: 'Trouble getting User recommendations, try again' });
+        }
+      }, err => {
+        this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Server down. Trouble getting User recommendations, try again' });
+      }
+    )
+  }
+
 
   showPositionDialog(companyData) {
     this.position = "right";
@@ -159,49 +202,7 @@ export class RecommendationsComponent implements OnInit {
     )
   }
 
-  getRecommendations() {
-    this.recommendationsService.getUserRecommendationsByParamaters(this.selectedSector.codeS, this.selectedParameter.codeP).subscribe(
-      (data: UserStock[]) => {
-        if (data != null && data.length > 0) {
-          this.cols = [
-            { field: 'companySymbol', header: 'Stock' },
-            { field: 'companyName', header: 'Company' },
-            { field: 'open', header: 'Open' },
-            { field: 'close', header: 'Close' },
-            { field: 'high', header: 'High' },
-            { field: 'low', header: 'Low' }
-          ];
-          
-          this.listOfRecommendationsForUser = data
-          this.listOfXaxisCompanySymbols = data.map(data => data.companySymbol)
-          this.listOfOpenValues = data.map(data => data.open)
-          this.listOfCloseValues = data.map(data => data.close)
-          this.listOfHighValues = data.map(data => data.high)
-          this.listOfLowValues = data.map(data => data.low)
-
-          if (this.selectedParameter.codeP == "CHANGE") {
-            this.cols.push({ field: 'change', header: 'Change' });
-          }
-          if (this.selectedParameter.codeP == "PE_RATIO") {
-            this.cols.push({ field: 'peRatio', header: 'PE Ratio' });
-          }
-          if (this.selectedParameter.codeP == "MARKET_CAP") {
-            this.cols.push({ field: 'marketCap', header: 'Market Capital' });
-          }
-
-          this.renderComparisonChart()
-          this.renderData = true
-          this.showChart = true
-        }
-        else {
-          this.messageService.add({ severity: 'error', summary: 'NetworkError', detail: 'Trouble getting User recommendations, try again' });
-        }
-      }, err => {
-        this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Server down. Trouble getting User recommendations, try again' });
-      }
-    )
-  }
-
+  
   renderComparisonChart() {
 
     this.chartData = {

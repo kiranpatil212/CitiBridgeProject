@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { MessageService } from 'primeng/api';
 
 declare interface RouteInfo {
   path: string;
@@ -34,15 +33,14 @@ export const ROUTES: RouteInfo[] = [
 @Component({
   selector: "app-sidebar",
   templateUrl: "./sidebar.component.html",
-  styleUrls: ["./sidebar.component.css"],
-  providers: [MessageService]
+  styleUrls: ["./sidebar.component.css"]
 })
 
 export class SidebarComponent implements OnInit {
   menuItems: any[];
   userName: string;
 
-  constructor(private router: Router, private messageService: MessageService) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
@@ -57,7 +55,5 @@ export class SidebarComponent implements OnInit {
   logout() {
     sessionStorage.clear();
     this.router.navigate(["/login"])
-    console.log("Log Out Successful")
-    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Log Out successful' })
   }
 }

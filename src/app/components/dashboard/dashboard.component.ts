@@ -72,7 +72,6 @@ export class DashboardComponent implements OnInit {
           this.listOfAvgGrowth = data.map(data => data.avgGrowth)
           this.sectorWiseDataFlag = true
           this.renderSectorsTable()
-
         }
         else {
           this.messageService.add({ severity: 'error', summary: 'NetworkError', detail: 'Trouble getting Sector Wise Comparison, try again' });
@@ -155,8 +154,6 @@ export class DashboardComponent implements OnInit {
     gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
     gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
     gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
-
-
 
     var myChart = new Chart(this.ctx, {
       type: 'bar',

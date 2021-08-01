@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
 
     this.service.checkLogin(temp).subscribe(
       (data: boolean) => {
-        console.log(data)
         if (data != true) {
           this.service.isValidUser = false;
           this.message = "Bad credentials. Please enter valid Username and Password.";

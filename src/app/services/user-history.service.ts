@@ -11,7 +11,6 @@ import { UserStock } from '../models/user-stock';
 export class UserHistoryService {
 
   backendUrl = environment.backendUrl;
-  userName: string;
 
   constructor(private http: HttpClient) { }
 

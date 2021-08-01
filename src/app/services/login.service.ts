@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,12 @@ export class LoginService {
   private loggedInStatus = false
   isValidUser: boolean = false;
 
-  serviceUrl = "http://localhost:8088";
+  backendUrl = environment.backendUrl;
 
   constructor(private http: HttpClient) { }
 
   checkLogin(user: User): Observable<any> {
-    return this.http.post(this.serviceUrl + "/user/login", user)
+    return this.http.post(this.backendUrl + "/user/login", user)
   }
 
   get isLoggedIn() {
