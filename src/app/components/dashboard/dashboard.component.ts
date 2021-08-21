@@ -22,6 +22,8 @@ export class DashboardComponent implements OnInit {
   public sectorWiseDataFlag: boolean = false;
   public newsDataFlag: boolean = false;
   public topStockFlag: boolean = false;
+  public hasNoTopStock = false;
+  public spinnerFlag = false;
 
   public latestNews: any;
   public newsArticles: NewsArticle[];
@@ -83,11 +85,14 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.getTopPerformingStockDetails().subscribe(
       data => {
-        if (data != null) {
+        if (data != null ) {
           this.topPerformingStock = data
           this.topStockFlag = true
+          this.spinnerFlag=false;
         }
         else {
+          this.hasNoTopStock = true;
+          this.spinnerFlag = false;
           this.messageService.add({ severity: 'error', summary: 'NetworkError', detail: 'Trouble getting Top Performing Stock, try again' });
         }
       }, err => {

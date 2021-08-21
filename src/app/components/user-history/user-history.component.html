@@ -6,7 +6,6 @@
         [(selection)]="selectedStocks" [rowHover]="true">
         <ng-template pTemplate="header" let-columns>
           <tr>
-
             <th style="width: 3rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
@@ -25,7 +24,7 @@
             </td>
             <ng-container *ngFor="let col of columns">
 
-              <td *ngIf="col.field == 'companySymbol'" style="text-align: center;">
+              <td *ngIf="col.field == 'companySymbol'" style="text-align: center; word-wrap: break-word;">
                 <a class="hyperlink" (click)="getSelectedStockDetails(rowData)"
                   style="color: blue;"><u>{{rowData[col.field]}}</u></a>
               </td>
@@ -38,8 +37,14 @@
             </ng-container>
           </tr>
         </ng-template>
-      </p-table>
 
+        <ng-template pTemplate="emptymessage">
+          <tr>
+              <td colspan="5" style="text-align: center;">No stocks found.</td>
+          </tr>
+      </ng-template>
+
+      </p-table>
       <br><br>
       <button [disabled]="selectedStocks == null" type="submit" class="btn btn-success" style="color: darkslateblue; font-size: medium;" (click)="deleteSelectedStocks()">DELETE SELECTED STOCKS</button>
     </div>
@@ -53,9 +58,12 @@
           </h4>
         </div>
         <div class="card-body">
-          <div *ngIf="!stockSelectedFlag" style="text-align: center;">
+          <div *ngIf="!stockSelectedFlag && !noUserHistoryFlag" style="text-align: center;">
             <p-progressSpinner></p-progressSpinner>
           </div>
+          <h4 *ngIf="noUserHistoryFlag" style="text-align: center;">
+            No Stocks found.
+          </h4>
           <div *ngIf="stockSelectedFlag">
             <p-chart type="line" [data]="chartData" [options]="chartConfigOptions"></p-chart>
           </div>
@@ -66,13 +74,16 @@
         <div class="card-header">
           <h5 class="card-category">Current Statistics</h5>
           <h4 class="card-title">
-            <i class=" tim-icons icon-notes text-info"> </i> META DATA - {{selectedStockSymbol}}
+            <i class=" tim-icons icon-notes text-info"> </i>  ABOUT - {{selectedStockSymbol}}
           </h4>
         </div>
         <div class="card-body">
-          <div *ngIf="!stockSelectedFlag" style="text-align: center;">
+          <div *ngIf="!stockSelectedFlag && !noUserHistoryFlag" style="text-align: center;">
             <p-progressSpinner></p-progressSpinner>
           </div>
+          <h4 *ngIf="noUserHistoryFlag" style="text-align: center;">
+            No Stocks found.
+          </h4>
           <div *ngIf="stockSelectedFlag">
             <div class="row">
               <div class="col-md-12" style="text-align: center;">

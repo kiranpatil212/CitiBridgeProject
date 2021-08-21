@@ -14,10 +14,11 @@ import { MessageService } from 'primeng/api';
 export class UserHistoryComponent implements OnInit {
 
   cols: any[];
-  listOfUserHistory: UserHistory[];
+  listOfUserHistory: UserHistory[] = [];
   selectedStock: UserStock;
   selectedStockSymbol: string;
-  stockSelectedFlag = false;
+  stockSelectedFlag : boolean = false;
+  noUserHistoryFlag : boolean = false;
 
   selectedStocks: UserHistory[];
   stock: UserHistory;
@@ -33,7 +34,7 @@ export class UserHistoryComponent implements OnInit {
   constructor(private userHistoryService: UserHistoryService, private messageService: MessageService) { }
 
   ngOnInit() {
-
+    this.listOfUserHistory = [];
     if (this.stockSelectedFlag == false) {
       this.userHistoryService.getUserHistoryByUsername().subscribe(
         (data: UserHistory[]) => {
@@ -42,6 +43,7 @@ export class UserHistoryComponent implements OnInit {
             this.getSelectedStockDetails(this.listOfUserHistory[0])
           }
           else {
+            this.noUserHistoryFlag = true
             this.messageService.add({ severity: 'error', summary: 'NetworkError', detail: 'Trouble getting History of Saved Stocks, try again' });
           }
         }, err => {
@@ -74,27 +76,33 @@ export class UserHistoryComponent implements OnInit {
           this.stockSelectedFlag = true
         }
         else {
-          this.messageService.add({severity:'error', summary: 'ServerError', detail: 'Trouble fetching current Statistics of Selected Stock, try again'});
+          this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Trouble fetching current Statistics of Selected Stock, try again' });
         }
       }, err => {
-        this.messageService.add({severity:'error', summary: 'NetworkError', detail: 'Server down. Trouble fetching current Statistics of Selected Stock, try again'});
+        this.messageService.add({ severity: 'error', summary: 'NetworkError', detail: 'Server down. Trouble fetching current Statistics of Selected Stock, try again' });
       }
     )
   }
 
   deleteSelectedStocks() {
     this.ids = this.selectedStocks.map(data => data.id)
+    if (this.ids == null || this.ids.length == 0) {
+      this.messageService.add({ severity: 'warn', summary: 'No Stocks Selected', detail: 'Please select stocks to delete.' });
+      this.selectedStocks = null;
+      return;
+    }
     this.userHistoryService.deleteStocksFromUserHistory(this.ids).subscribe(
       (data: boolean) => {
-        if(data == true){
+        if (data == true) {
+          this.messageService.add({ severity: 'success', summary: 'Selected Stocks Deleted', detail: 'Selected Stocks are successfully deleted.' });
           location.reload();
         }
         else {
-          this.messageService.add({severity:'warn', summary: 'No Stocks Selected', detail: 'Please select stocks to delete.'});
+          this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Trouble deleting selected Stocks, try again' });
           this.selectedStocks = null;
         }
       }, err => {
-        this.messageService.add({severity:'error', summary: 'ServerError', detail: 'Trouble deleting selected Stocks, try again'});
+        this.messageService.add({ severity: 'error', summary: 'ServerError', detail: 'Trouble deleting selected Stocks, try again' });
       }
     )
   }

@@ -18,17 +18,20 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;
 
 			<button *ngIf="selectedSector!=null && selectedParameter!=null" type="submit" class="btn btn-success"
-				style="color: darkslateblue; font-size: medium;" (click)="getRecommendations()">RECOMMENDATIONS</button>
+				style="color: darkslateblue; font-size: medium;" (click)="getRecommendations()">GET RECOMMENDATIONS</button>
 
 			<br><br><br><br>
 
+			<div *ngIf="loaderFlag" style="text-align: center;">
+				<p-progressSpinner></p-progressSpinner>
+			</div>
 			<div class="card" *ngIf="renderData">
 				<div class="row">
 					<div class="col-sm-4"></div>
 					<div class="col-sm-5"></div>
 					<div class="col-sm-3">
 						<br>
-						<label for="ToggleChart" style="font-size: large; color: white;">Toggle Chart.</label>
+						<label for="ToggleChart" style="font-size: large; color: white; padding-right: 1rem;">Toggle Chart</label>
 						<p-inputSwitch name="ToggleChart" [(ngModel)]="!showChart" (click)="showChart=!showChart">
 						</p-inputSwitch>
 					</div>

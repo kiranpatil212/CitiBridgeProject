@@ -47,6 +47,7 @@ export class RecommendationsComponent implements OnInit {
   volume: string;
   public flag: boolean = false;
   selectedStock: UserStock;
+  public loaderFlag : boolean = false;
 
   chartData: any;
   chartConfigOptions: any;
@@ -109,16 +110,19 @@ export class RecommendationsComponent implements OnInit {
   }
 
   getRecommendations() {
+    this.renderData=false;
+    this.showChart=false;
+    this.loaderFlag = true;
     this.recommendationsService.getUserRecommendationsByParamaters(this.selectedSector.codeS, this.selectedParameter.codeP).subscribe(
       (data: UserStock[]) => {
         if (data != null && data.length > 0) {
           this.cols = [
             { field: 'companySymbol', header: 'Stock' },
             { field: 'companyName', header: 'Company' },
-            { field: 'open', header: 'Open' },
-            { field: 'close', header: 'Close' },
-            { field: 'high', header: 'High' },
-            { field: 'low', header: 'Low' }
+            { field: 'open', header: 'Open (INR)' },
+            { field: 'close', header: 'Close (INR)' },
+            { field: 'high', header: 'High (INR)' },
+            { field: 'low', header: 'Low (INR)' }
           ];
           
           this.listOfRecommendationsForUser = data
@@ -129,16 +133,17 @@ export class RecommendationsComponent implements OnInit {
           this.listOfLowValues = data.map(data => data.low)
 
           if (this.selectedParameter.codeP == "CHANGE") {
-            this.cols.push({ field: 'change', header: 'Change' });
+            this.cols.push({ field: 'change', header: 'Change (%)' });
           }
           if (this.selectedParameter.codeP == "PE_RATIO") {
             this.cols.push({ field: 'peRatio', header: 'PE Ratio' });
           }
           if (this.selectedParameter.codeP == "MARKET_CAP") {
-            this.cols.push({ field: 'marketCap', header: 'Market Capital' });
+            this.cols.push({ field: 'marketCap', header: 'Market Capital (INR)' });
           }
 
           this.renderComparisonChart()
+          this.loaderFlag = false;
           this.renderData = true
           this.showChart = true
         }
